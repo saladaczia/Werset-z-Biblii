@@ -7,60 +7,77 @@
 
 import SwiftUI
 
-struct TestDesign: View {
+struct HomeView: View {
     
-    // MARK: - Stan widoku
-    @State var onClicked: Bool = false
-    @State var onClickedHearth: Bool = false
-    @State var onClickedBg: Bool = false
+    // MARK: - Stany
+    @State private var onClicked: Bool = false
+    @State private var onClickedHearth: Bool = false
+    @State private var onClickedBg: Bool = false
     
-    // MARK: - Teksty biblijne
-    let verse1Text = "Ci, którzy zaufali Panu, odzyskują siły, otrzymują skrzydła jak orły; biegną bez zmęczenia, bez znużenia idą."
-    let verse1Ref = "IZAJASZ 40:31"
+    @State private var currentVerseIndex: Int = 0
+    @State private var showVerse: Bool = false
     
-    let verse2Text = "Nie lękaj się, bo Ja jestem z tobą, nie trwóż się, bo Ja jestem twoim Bogiem! Umacniam cię, tak, pomagam ci, podtrzymuję cię prawicą mej sprawiedliwości."
-    let verse2Ref = "Izajasz 41:10"
+    // MARK: - Dane wersetów
+    let verses = [
+        (
+            "Ci, którzy zaufali Panu, odzyskują siły, otrzymują skrzydła jak orły; biegną bez zmęczenia, bez znużenia idą.",
+            "IZAJASZ 40:31"
+        ),
+        (
+            "Nie lękaj się, bo Ja jestem z tobą, nie trwóż się, bo Ja jestem twoim Bogiem! Umacniam cię, tak, pomagam ci, podtrzymuję cię prawicą mej sprawiedliwości.",
+            "Izajasz 41:10"
+        )
+    ]
     
     // MARK: - Ciało widoku
     var body: some View {
         ZStack {
-            // Tło – test zmiany
+            // Tło zmienne
             Image(onClickedBg ? "background3" : "background")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
             
             VStack {
-                // Główna część z tekstem
+                // Tekst weresetu i referencji
                 VStack {
-                    Text(onClickedBg ? verse2Text : verse1Text)
-                        .font(.custom("HappyTime", size: 22))
-                        .foregroundStyle(.black)
-                        .padding(.vertical, 5)
+                        Text(verses[currentVerseIndex].0)
+                            .font(.custom("HappyTime", size: 22))
+                            .foregroundStyle(.black)
+                            .multilineTextAlignment(.center)
+                            .padding(.vertical, 5)
+                            .opacity(showVerse ? 1 : 0)
+                            .animation(.easeInOut(duration: 4.0), value: showVerse)
+                    
+                    
                     HStack {
                         Spacer()
-                        Text(onClickedBg ? verse2Ref : verse1Ref)
-                            .font(.callout)
-                            .foregroundStyle(.black)
-                            .padding(.trailing, 20)
-                }
-                
+                            Text(verses[currentVerseIndex].1)
+                                .font(.callout)
+                                .foregroundStyle(.black)
+                                .padding(.trailing, 20)
+                                .opacity(showVerse ? 1 : 0)
+                                .animation(.easeInOut(duration: 4.0), value: showVerse)
+                        
+                    }
                 }
                 .frame(height: UIScreen.main.bounds.height / 2)
+                
                 Spacer()
             }
             .frame(width: UIScreen.main.bounds.width - 40)
             
-            // Nakładka UI z ikonami
+            // UI górny + dolny
             VStack {
                 HStack {
-                    // Ikona udostępniania
-                    Image(systemName: "square.and.arrow.up")
+                    // Ikona gear
+                    Image(systemName: "gearshape")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 38, height: 38)
+                        .frame(width: 30, height: 30)
                         .foregroundStyle(.black)
                         .opacity(onClicked ? 1.0 : 0.0)
+                        .animation(.easeInOut(duration: 0.5), value: onClicked)
                         .onTapGesture {
                             onClickedBg.toggle()
                         }
@@ -72,16 +89,18 @@ struct TestDesign: View {
                         .font(.headline)
                         .foregroundStyle(.black)
                         .opacity(onClicked ? 1.0 : 0.0)
+                        .animation(.easeInOut(duration: 0.5), value: onClicked)
                     
                     Spacer()
                     
-                    // Ikona serca
+                    // Serce
                     Image(systemName: onClickedHearth ? "heart.fill" : "heart")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 30, height: 30)
                         .foregroundStyle(.black)
                         .opacity(onClicked ? 1.0 : 0.0)
+                        .animation(.easeInOut(duration: 0.5), value: onClicked)
                         .onTapGesture {
                             onClickedHearth.toggle()
                         }
@@ -91,14 +110,15 @@ struct TestDesign: View {
                 
                 Spacer()
                 
-                // Menu dolne
+                // Dolne menu
                 HStack {
-                    Image(systemName: "line.3.horizontal.circle.fill")
+                    Image(systemName: "line.3.horizontal.decrease.circle.fill")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 38, height: 38)
+                        .frame(width: 35, height: 35)
                         .foregroundStyle(.gray)
                         .opacity(onClicked ? 1.0 : 0.0)
+                        .animation(.easeInOut(duration: 0.5), value: onClicked)
                         .onTapGesture {
                             onClickedBg.toggle()
                         }
@@ -107,30 +127,38 @@ struct TestDesign: View {
                 .frame(width: UIScreen.main.bounds.width - 40)
                 .padding(.horizontal, 30)
             }
-            
         }
         .frame(width: UIScreen.main.bounds.width)
         .onTapGesture {
-            onClicked.toggle()
+            withAnimation {
+                onClicked.toggle()
+            }
+            
             print("Przełączono na \(onClicked)")
         }
         .onAppear {
-                        AudioManager.shared.playBackgroundMusic()
-                    }
+            
+            
+            // Animacja dla wersetu
+                withAnimation {
+                    showVerse = true
+                }
+            
+        }
+        }
     }
     
     // MARK: - Formatowana data (PL)
     var formattedDate: String {
-         let formatter = DateFormatter()
-         formatter.locale = Locale(identifier: "pl_PL")
-        formatter.dateStyle = .short // pokaże np. "wtorek, 24 czerwca 2025"
-         formatter.timeStyle = .none
-         return formatter.string(from: Date())
-     }
-    
-}
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "pl_PL")
+        formatter.dateStyle = .short
+        formatter.timeStyle = .none
+        return formatter.string(from: Date())
+    }
+
 
 // MARK: - Podgląd
 #Preview {
-    TestDesign()
+    HomeView()
 }
