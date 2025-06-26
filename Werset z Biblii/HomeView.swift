@@ -16,7 +16,8 @@ struct HomeView: View {
     
     @State private var currentVerseIndex: Int = 0
     @State private var showVerse: Bool = false
-    
+    @State private var showSettingsSheet: Bool = false
+    @State private var selectedTab = 0
     // MARK: - Dane wersetów
     let verses = [
         (
@@ -79,7 +80,7 @@ struct HomeView: View {
                         .opacity(onClicked ? 1.0 : 0.0)
                         .animation(.easeInOut(duration: 0.5), value: onClicked)
                         .onTapGesture {
-                            onClickedBg.toggle()
+                            showSettingsSheet.toggle()
                         }
                     
                     Spacer()
@@ -137,13 +138,13 @@ struct HomeView: View {
             print("Przełączono na \(onClicked)")
         }
         .onAppear {
-            
-            
             // Animacja dla wersetu
                 withAnimation {
                     showVerse = true
                 }
-            
+        }
+        .sheet(isPresented: $showSettingsSheet) {
+            SettingsSheetView()
         }
         }
     }
@@ -157,6 +158,24 @@ struct HomeView: View {
         return formatter.string(from: Date())
     }
 
+struct SettingsSheetView: View {
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Ustawienia")
+                .font(.title)
+                .fontWeight(.bold)
+
+            Divider()
+
+            Toggle("Powiadomienia", isOn: .constant(false))
+            Toggle("Dark Mode", isOn: .constant(true))
+
+            Spacer()
+        }
+        .padding()
+        .presentationDetents([.medium]) // iOS 16+
+    }
+}
 
 // MARK: - Podgląd
 #Preview {
