@@ -9,10 +9,11 @@ import SwiftUI
 
 @main
 struct Werset_z_BibliiApp: App {
-
+    
     var body: some Scene {
+        
         WindowGroup {
-            HomeView()
+            HomeView2()
                 .onAppear {
                     AudioManager.shared.playBackgroundMusic()
                 }
