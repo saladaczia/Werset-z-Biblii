@@ -4,7 +4,7 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>HappyTime.otf</string>
+		<string>Assets/Fonts/HappyTime.otf</string>
 	</array>
 </dict>
 </plist>
