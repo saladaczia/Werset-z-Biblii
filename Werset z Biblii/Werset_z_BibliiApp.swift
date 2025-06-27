@@ -13,7 +13,7 @@ struct Werset_z_BibliiApp: App {
     var body: some Scene {
         
         WindowGroup {
-            HomeView2()
+            HomeView()
                 .onAppear {
                     AudioManager.shared.playBackgroundMusic()
                 }
