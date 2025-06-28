@@ -10,6 +10,7 @@ import SwiftUI
 struct ButtonsView: View {
     
     @State private var onClickedHearth: Bool = false
+    @Binding var onClickedSettings: Bool
     
     // Date formetter
     private var formattedDate: String {
@@ -23,13 +24,16 @@ struct ButtonsView: View {
     var body: some View {
         VStack {
             HStack {
-                // Gear icon
+                // Settings icon
                 Image(systemName: "gearshape")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 30, height: 30)
                     .foregroundStyle(.black)
-                
+                    .onTapGesture {
+                        onClickedSettings.toggle()
+                        print("Open settings view")
+                    }
                 Spacer()
                 
                 // Data
@@ -53,4 +57,10 @@ struct ButtonsView: View {
         .padding(.top, 40)
         .padding(.horizontal, 20)
     }
+}
+
+#Preview {
+    @Previewable @State var sampleClickedSettings: Bool = false
+    return ButtonsView(onClickedSettings: $sampleClickedSettings)
+    
 }

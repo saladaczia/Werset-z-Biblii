@@ -9,11 +9,12 @@ import SwiftUI
 
 struct VerseTextView: View {
     
-    @Binding var verses: [(String, String)]
-    
+    @StateObject private var viewModel = HomeViewModel()
+   
     var body: some View {
         VStack {
-                Text(verses[0].0)
+            // Text verse
+                Text(viewModel.verses[0].text)
                     .font(.custom("HappyTime", size: 22))
                     .foregroundStyle(.black)
                     .multilineTextAlignment(.center)
@@ -23,10 +24,11 @@ struct VerseTextView: View {
             
             HStack {
                 Spacer()
-                    Text(verses[0].1)
+                // Reference verse
+                    Text(viewModel.verses[0].reference)
                         .font(.callout)
                         .foregroundStyle(.black)
-                        .padding(.trailing, 20)
+                        .padding(.trailing, 40)
                 
             }
         }
@@ -35,6 +37,5 @@ struct VerseTextView: View {
 }
 
 #Preview {
-    @Previewable @State var sampleVerses = [("Nie lękaj się, bo Ja jestem z tobą, nie trwóż się, bo Ja jestem twoim Bogiem!", "Ref testowy")]
-    return VerseTextView(verses: $sampleVerses)
+    return VerseTextView()
 }
