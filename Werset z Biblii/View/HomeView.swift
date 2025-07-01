@@ -43,10 +43,19 @@ struct HomeView: View {
             ButtonsView(onClickedSettings: $onClickedSettings)
                 .opacity(showButtonsView ? 1.0 : 0.0)
                 .animation(.easeInOut(duration: 0.5), value: showButtonsView)
-                
+            
+            // Settings View sheet
+                .sheet(isPresented: $onClickedSettings) {
+                    SettingView()
+                }
+            /*
             if onClickedSettings {
-                // SettingView()
+                SettingView()
+                    .padding(.top, 100)
+                    .transition(.move(edge: .bottom))
+                    .animation(.default)
             }
+*/
         }
         .onTapGesture {
             // Animate for showing buttons

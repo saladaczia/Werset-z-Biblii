@@ -31,8 +31,11 @@ struct ButtonsView: View {
                     .frame(width: 30, height: 30)
                     .foregroundStyle(.black)
                     .onTapGesture {
-                        onClickedSettings.toggle()
-                        print("Open settings view")
+                        withAnimation {
+                            onClickedSettings.toggle()
+                            print("Open settings view")
+                        }
+                        
                     }
                 Spacer()
                 
