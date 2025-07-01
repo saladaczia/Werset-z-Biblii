@@ -48,14 +48,7 @@ struct HomeView: View {
                 .sheet(isPresented: $onClickedSettings) {
                     SettingView()
                 }
-            /*
-            if onClickedSettings {
-                SettingView()
-                    .padding(.top, 100)
-                    .transition(.move(edge: .bottom))
-                    .animation(.default)
-            }
-*/
+       
         }
         .onTapGesture {
             // Animate for showing buttons
