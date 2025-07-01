@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class HomeViewModel: ObservableObject {
+class VersesViewModel: ObservableObject {
     @Published var verses: [VersesModel] = []
 
     init() {

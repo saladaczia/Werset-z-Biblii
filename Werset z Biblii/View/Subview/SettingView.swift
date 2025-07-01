@@ -99,4 +99,5 @@ struct SettingView: View {
 
 #Preview {
     SettingView()
+        .environmentObject(VersesViewModel())
 }

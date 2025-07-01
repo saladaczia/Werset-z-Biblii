@@ -9,7 +9,7 @@ import SwiftUI
 
 struct VerseTextView: View {
     
-    @StateObject private var viewModel = HomeViewModel()
+    @EnvironmentObject private var viewModel: VersesViewModel
    
     var body: some View {
         VStack {
@@ -37,5 +37,6 @@ struct VerseTextView: View {
 }
 
 #Preview {
-    return VerseTextView()
+    VerseTextView()
+        .environmentObject(VersesViewModel())
 }
