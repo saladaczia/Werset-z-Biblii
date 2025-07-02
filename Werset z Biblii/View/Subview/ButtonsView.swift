@@ -9,6 +9,9 @@ import SwiftUI
 
 struct ButtonsView: View {
     
+    // ViewModel
+    @EnvironmentObject private var viewModel: VersesViewModel
+    
     @State private var onClickedHearth: Bool = false
     @Binding var onClickedSettings: Bool
     
@@ -29,7 +32,7 @@ struct ButtonsView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 30, height: 30)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(viewModel.isDarkBackground ? .white : .black)
                     .onTapGesture {
                         withAnimation {
                             onClickedSettings.toggle()
@@ -42,7 +45,7 @@ struct ButtonsView: View {
                 // Data
                 Text(formattedDate)
                     .font(.headline)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(viewModel.isDarkBackground ? .white : .black)
                 Spacer()
                 
                 // Heart icon
@@ -50,7 +53,7 @@ struct ButtonsView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 30, height: 30)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(viewModel.isDarkBackground ? .white : .black)
                     .onTapGesture {
                         onClickedHearth.toggle()
                     }
@@ -65,5 +68,6 @@ struct ButtonsView: View {
 #Preview {
     @Previewable @State var sampleClickedSettings: Bool = false
     return ButtonsView(onClickedSettings: $sampleClickedSettings)
+        .environmentObject(VersesViewModel())
     
 }

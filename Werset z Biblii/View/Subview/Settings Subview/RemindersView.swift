@@ -9,10 +9,19 @@ import SwiftUI
 
 struct RemindersView: View {
     
+    // ViewModel
     @EnvironmentObject private var viewModel: VersesViewModel
     
     var body: some View {
-        Text("RemindersView")
+        NavigationStack {
+            VStack {
+                Text("text")
+                    .font(.title2)
+                    .bold()
+                Spacer()
+            }
+        }
+        .navigationTitle("Powiadomienia")
     }
 }
 

@@ -9,21 +9,26 @@ import SwiftUI
 
 struct HomeView: View {
     
+    // ViewModel
+    @EnvironmentObject private var viewModel: VersesViewModel
     
     // Screen size area
     private let screenWidth = UIScreen.main.bounds.width
     private let screenHeight = UIScreen.main.bounds.height
     
+    // Show buttons
     @State private var showButtonsView: Bool = false
+    // Animate verse text
     @State private var animateShowVerseText: Bool = false
-    @State var onClickedSettings: Bool = false
+    
+    
     
     var body: some View {
     
         // Main ZStack
         ZStack {
             // Background
-            Image("background")
+            Image(viewModel.selectedBackground)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
@@ -40,15 +45,14 @@ struct HomeView: View {
             .frame(width: screenWidth, height: screenHeight)
             
             // Buttons View
-            ButtonsView(onClickedSettings: $onClickedSettings)
+            ButtonsView(onClickedSettings: $viewModel.onClickedSettings)
                 .opacity(showButtonsView ? 1.0 : 0.0)
                 .animation(.easeInOut(duration: 0.5), value: showButtonsView)
             
             // Settings View sheet
-                .sheet(isPresented: $onClickedSettings) {
+                .sheet(isPresented: $viewModel.onClickedSettings) {
                     SettingView()
                 }
-       
         }
         .onTapGesture {
             // Animate for showing buttons

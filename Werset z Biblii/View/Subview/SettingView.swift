@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SettingView: View {
     
-    @Environment(\.dismiss) var dismiss
+    // ViewModel
+    @EnvironmentObject private var viewModel: VersesViewModel
     
     var body: some View {
         ZStack {
@@ -32,7 +33,7 @@ struct SettingView: View {
                     // Theme setting button
                     HStack {
                         NavigationLink {
-                            EmptyView()
+                            ThemesView()
                         } label: {
                             Image(systemName: "paintpalette")
                                 .font(.title2)
@@ -64,7 +65,7 @@ struct SettingView: View {
                     // Reminders setting button
                     HStack {
                         NavigationLink {
-                            EmptyView()
+                            RemindersView()
                         } label: {
                             Image(systemName: "bell")
                                 .font(.title2)
@@ -88,12 +89,13 @@ struct SettingView: View {
                     ToolbarItem(placement: .topBarLeading) {
                         Image(systemName: "xmark")
                             .onTapGesture {
-                                dismiss()
+                                viewModel.onClickedSettings.toggle()
                             }
                     }
                 }
             }
         }
+        // End ZStack
     }
 }
 
