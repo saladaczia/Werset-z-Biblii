@@ -15,7 +15,7 @@ struct RemindersView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("text")
+                Text("Reminders View")
                     .font(.title2)
                     .bold()
                 Spacer()
