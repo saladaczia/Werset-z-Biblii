@@ -13,6 +13,8 @@ class VersesViewModel: ObservableObject {
     
     // Verses model
     @Published var verses: [VersesModel] = []
+    // Current Verse for today
+    @Published var currentVerse: VersesModel?
     // Open/Close settings
     @Published var onClickedSettings: Bool = false
     // User selected theme
@@ -31,6 +33,7 @@ class VersesViewModel: ObservableObject {
     
     init() {
         loadVersesFromJSON()
+        selectVerseForToday()
     }
 
     // Decode JSON data
@@ -48,4 +51,19 @@ class VersesViewModel: ObservableObject {
             print("Error loading JSON: \(error)")
         }
     }
+    
+    // Get selected verse for today
+    private func selectVerseForToday() {
+        guard !verses.isEmpty else { return }
+
+        let calendar = Calendar.current
+        let startDate = calendar.date(from: DateComponents(year: 2025, month: 6, day: 29))!
+        let today = calendar.startOfDay(for: Date())
+
+        let daysPassed = calendar.dateComponents([.day], from: startDate, to: today).day ?? 0
+        let index = daysPassed % verses.count
+
+        currentVerse = verses[index]
+    }
+    
 }

@@ -16,7 +16,7 @@ struct VerseTextView: View {
     var body: some View {
         VStack {
             // Text verse
-                Text(viewModel.verses[0].text)
+            Text(viewModel.currentVerse?.text ?? "Błąd")
                     .font(.custom("HappyTime", size: 22))
                     .foregroundStyle(viewModel.isDarkBackground ? .white : .black)
                     .multilineTextAlignment(.center)
@@ -27,7 +27,7 @@ struct VerseTextView: View {
             HStack {
                 Spacer()
                 // Reference verse
-                    Text(viewModel.verses[0].reference)
+                Text(viewModel.currentVerse?.reference ?? "Błąd")
                         .font(.callout)
                         .foregroundStyle(viewModel.isDarkBackground ? .white : .black)
                         .padding(.trailing, 40)

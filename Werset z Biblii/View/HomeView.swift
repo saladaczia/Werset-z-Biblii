@@ -53,7 +53,7 @@ struct HomeView: View {
                 .sheet(isPresented: $viewModel.onClickedSettings) {
                     SettingView()
                 }
-        }
+        }.statusBarHidden()
         .onTapGesture {
             // Animate for showing buttons
             withAnimation {
