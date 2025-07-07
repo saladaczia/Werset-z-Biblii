@@ -6,20 +6,25 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 @main
 struct Werset_z_BibliiApp: App {
     
-    @StateObject var viewModel = VersesViewModel()
+    // ViewModel
+    @StateObject var vm = VersesViewModel()
     
     var body: some Scene {
         
         WindowGroup {
             HomeView()
-                .environmentObject(viewModel)
+                .environmentObject(vm)
                 .preferredColorScheme(.light)
                 .onAppear {
+                    // Play music in background
                     AudioManager.shared.playBackgroundMusic()
+                    // Request user to Notification Permission
+                    vm.requestNotificationPermission()
                 }
         }
         

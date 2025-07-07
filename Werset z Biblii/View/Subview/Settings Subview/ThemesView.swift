@@ -10,7 +10,7 @@ import SwiftUI
 struct ThemesView: View {
     
     // ViewModel
-    @EnvironmentObject private var viewModel: VersesViewModel
+    @EnvironmentObject private var vm: VersesViewModel
     
     // colums for LazyVGrid
     let columns = [
@@ -36,17 +36,17 @@ struct ThemesView: View {
                     HStack {
                         Grid {
                             GridRow {
-                                ForEach(viewModel.illustrationsBgName, id: \.self) { item in
+                                ForEach(vm.illustrationsBgName, id: \.self) { item in
                                     Image(item)
                                         .resizable()
                                         .frame(maxWidth: .infinity, maxHeight: 200)
                                         .cornerRadius(20)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 20)
-                                                .stroke(viewModel.selectedBackground == item ? Color.blue : Color.clear, lineWidth: 4)
+                                                .stroke(vm.selectedBackground == item ? Color.blue : Color.clear, lineWidth: 4)
                                         )
                                         .onTapGesture {
-                                            viewModel.selectedBackground = item
+                                            vm.selectedBackground = item
                                         }
                                 }
                             }
@@ -63,17 +63,17 @@ struct ThemesView: View {
                     }
                     // Theme grid (Nature)
                     LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(viewModel.natureBgName, id: \.self) { item in
+                        ForEach(vm.natureBgName, id: \.self) { item in
                             Image(item)
                                 .resizable()
                                 .frame(maxWidth: .infinity, maxHeight: 200)
                                 .cornerRadius(20)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(viewModel.selectedBackground == item ? Color.blue : Color.clear, lineWidth: 4)
+                                        .stroke(vm.selectedBackground == item ? Color.blue : Color.clear, lineWidth: 4)
                                 )
                                 .onTapGesture {
-                                    viewModel.selectedBackground = item
+                                    vm.selectedBackground = item
                                 }
                         }
                     }

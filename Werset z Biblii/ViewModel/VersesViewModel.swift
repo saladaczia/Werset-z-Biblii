@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import SwiftUI
+import UserNotifications
 
 class VersesViewModel: ObservableObject {
     
@@ -19,11 +20,21 @@ class VersesViewModel: ObservableObject {
     @Published var onClickedSettings: Bool = false
     // User selected theme
     @Published var selectedTheme: Int = 0
+    
     // Background name arrays
     let illustrationsBgName = ["bg1-dark", "bg2-dark", "bg3"]
     let natureBgName = ["bg4", "bg5-dark", "bg6", "bg7", "bg8-dark", "bg9-dark"]
     // Saved selected theme
     @AppStorage("selectedBackground") var selectedBackground = "bg4"
+    
+    // Active Reminder Toogle
+    @AppStorage("reminderToogle") var reminderToogle: Bool = false
+    // Date for Picker Reminder Notification
+    @AppStorage("date") var date = Date()
+    // Notification Request is ON?
+    @AppStorage("notificationRequestIsOn") var notificationRequestIsOn: Bool = false
+    // Daily notification is ON?
+    @AppStorage("notificationDailyIsOn") var notificationDailyIsOn: Bool = false
     
     // User theme is dark or light
     var isDarkBackground: Bool {
@@ -52,7 +63,8 @@ class VersesViewModel: ObservableObject {
         }
     }
     
-    // Get selected verse for today
+    
+    // Get Verse for today
     private func selectVerseForToday() {
         guard !verses.isEmpty else { return }
 
@@ -66,4 +78,52 @@ class VersesViewModel: ObservableObject {
         currentVerse = verses[index]
     }
     
+    // Request Notification
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                
+                print("Błąd podczas proszenia o zgodę: \(error)")
+            } else {
+                DispatchQueue.main.async {
+                    self.notificationRequestIsOn = granted
+                }
+                print("Zgoda na powiadomienia: \(granted)")
+            }
+        }
+    }
+    
+    // Daily notification ON
+    func activeDailyNotification(_ hour: Int, _ minute: Int) {
+        let content = UNMutableNotificationContent()
+        content.title = "📖 Werset na dziś"
+        content.body = "Kliknij, aby zobaczyć dzisiejszy fragment z Pisma Świętego."
+        content.sound = .default
+
+        var dateComponents = DateComponents()
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+
+        let request = UNNotificationRequest(
+            identifier: "dailyVerseNotification",
+            content: content,
+            trigger: trigger
+        )
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Błąd przy dodawaniu powiadomienia: \(error)")
+            } else {
+                print("Powiadomienie zaplanowane ✅")
+            }
+        }
+    }
+    
+    // Daily notification OFF
+    func removeDailyNotification() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dailyVerseNotification"])
+        print("powiadomienia usunięte")
+    }
 }

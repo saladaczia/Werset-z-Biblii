@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingView: View {
     
     // ViewModel
-    @EnvironmentObject private var viewModel: VersesViewModel
+    @EnvironmentObject private var vm: VersesViewModel
     
     var body: some View {
         ZStack {
@@ -89,7 +89,7 @@ struct SettingView: View {
                     ToolbarItem(placement: .topBarLeading) {
                         Image(systemName: "xmark")
                             .onTapGesture {
-                                viewModel.onClickedSettings.toggle()
+                                vm.onClickedSettings.toggle()
                             }
                     }
                 }

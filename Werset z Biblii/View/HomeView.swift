@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     // ViewModel
-    @EnvironmentObject private var viewModel: VersesViewModel
+    @EnvironmentObject private var vm: VersesViewModel
     
     // Screen size area
     private let screenWidth = UIScreen.main.bounds.width
@@ -28,7 +28,7 @@ struct HomeView: View {
         // Main ZStack
         ZStack {
             // Background
-            Image(viewModel.selectedBackground)
+            Image(vm.selectedBackground)
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
@@ -45,12 +45,12 @@ struct HomeView: View {
             .frame(width: screenWidth, height: screenHeight)
             
             // Buttons View
-            ButtonsView(onClickedSettings: $viewModel.onClickedSettings)
+            ButtonsView(onClickedSettings: $vm.onClickedSettings)
                 .opacity(showButtonsView ? 1.0 : 0.0)
                 .animation(.easeInOut(duration: 0.5), value: showButtonsView)
             
             // Settings View sheet
-                .sheet(isPresented: $viewModel.onClickedSettings) {
+                .sheet(isPresented: $vm.onClickedSettings) {
                     SettingView()
                 }
         }.statusBarHidden()

@@ -10,15 +10,15 @@ import SwiftUI
 struct VerseTextView: View {
     
     // ViewModel
-    @EnvironmentObject private var viewModel: VersesViewModel
+    @EnvironmentObject private var vm: VersesViewModel
    
     
     var body: some View {
         VStack {
             // Text verse
-            Text(viewModel.currentVerse?.text ?? "Błąd")
+            Text(vm.currentVerse?.text ?? "Błąd")
                     .font(.custom("HappyTime", size: 22))
-                    .foregroundStyle(viewModel.isDarkBackground ? .white : .black)
+                    .foregroundStyle(vm.isDarkBackground ? .white : .black)
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 5)
                     .padding(.horizontal, 20)
@@ -27,9 +27,9 @@ struct VerseTextView: View {
             HStack {
                 Spacer()
                 // Reference verse
-                Text(viewModel.currentVerse?.reference ?? "Błąd")
+                Text(vm.currentVerse?.reference ?? "Błąd")
                         .font(.callout)
-                        .foregroundStyle(viewModel.isDarkBackground ? .white : .black)
+                        .foregroundStyle(vm.isDarkBackground ? .white : .black)
                         .padding(.trailing, 40)
                 
             }
