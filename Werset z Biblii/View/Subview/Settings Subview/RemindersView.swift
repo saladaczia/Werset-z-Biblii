@@ -24,6 +24,8 @@ struct RemindersView: View {
     // Show set button
     @State var showPicker = false
     
+    // Show alert
+    @State private var showAlert = false
         
     
     var body: some View {
@@ -48,10 +50,7 @@ struct RemindersView: View {
                         // user must notificaction On in system
                         vm.reminderToogle = false
                         // -> Alert for user must change notification settings in iOS system
-                        if let appSettings = URL(string: UIApplication.openSettingsURLString),
-                           UIApplication.shared.canOpenURL(appSettings) {
-                            UIApplication.shared.open(appSettings)
-                        }
+                        showAlert = true
                     } else {
                         // user set daily notification on off
                         vm.removeDailyNotification()
@@ -106,6 +105,21 @@ struct RemindersView: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 10)
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Zezwól na powiadomienia"),
+                    message: Text("Przejdź do ustawień i zezwól tej aplikacji na wysyłanie powiadomień."),
+                    primaryButton: .default(Text("Ustawienia")) {
+                        if let appSettings = URL(string: UIApplication.openSettingsURLString),
+                           UIApplication.shared.canOpenURL(appSettings) {
+                            UIApplication.shared.open(appSettings)
+                        }
+                    },
+                    secondaryButton: .cancel() {
+                        print("Canceled")
+                    }
+                )
+            }
         }
         .navigationTitle("Powiadomienia")
         .onAppear {
