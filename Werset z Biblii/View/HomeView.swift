@@ -45,14 +45,18 @@ struct HomeView: View {
             .frame(width: screenWidth, height: screenHeight)
             
             // Buttons View
-            ButtonsView(onClickedSettings: $vm.onClickedSettings)
-                .opacity(showButtonsView ? 1.0 : 0.0)
-                .animation(.easeInOut(duration: 0.5), value: showButtonsView)
-            
-            // Settings View sheet
-                .sheet(isPresented: $vm.onClickedSettings) {
-                    SettingView()
-                }
+            if #available(iOS 26.0, *) {
+                ButtonsView(onClickedSettings: $vm.onClickedSettings)
+                    .opacity(showButtonsView ? 1.0 : 0.0)
+                    .animation(.easeInOut(duration: 0.5), value: showButtonsView)
+                
+                // Settings View sheet
+                    .sheet(isPresented: $vm.onClickedSettings) {
+                        SettingView()
+                    }
+            } else {
+                // Fallback on earlier versions
+            }
         }.statusBarHidden()
         .onTapGesture {
             // Animate for showing buttons

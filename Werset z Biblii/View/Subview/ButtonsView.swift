@@ -12,8 +12,9 @@ struct ButtonsView: View {
     // ViewModel
     @EnvironmentObject private var vm: VersesViewModel
     
-    @State private var onClickedHearth: Bool = false
+    //@State private var onClickedHearth: Bool = false
     @Binding var onClickedSettings: Bool
+    
     
     // Date formetter
     private var formattedDate: String {
@@ -48,17 +49,19 @@ struct ButtonsView: View {
                     .foregroundStyle(vm.isDarkBackground ? .white : .black)
                 Spacer()
                 
-                // Heart icon
-                Image(systemName: onClickedHearth ? "heart.fill" : "heart")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                    .onTapGesture {
-                        onClickedHearth.toggle()
+                if let verse = vm.currentVerse {
+                    ShareLink(item: "„\(verse.text)” – \(verse.reference)") {
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                            .foregroundStyle(vm.isDarkBackground ? .white : .black)
                     }
+                }
+                
             }
             Spacer()
+            
         }
         .padding(.top, 40)
         .padding(.horizontal, 20)

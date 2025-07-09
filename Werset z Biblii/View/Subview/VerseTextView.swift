@@ -29,7 +29,7 @@ struct VerseTextView: View {
                 // Reference verse
                 Text(vm.currentVerse?.reference ?? "Błąd")
                         .font(.callout)
-                        .foregroundStyle(vm.isDarkBackground ? .white : .black)
+                        .foregroundStyle(Color(vm.isDarkBackground ? "textLightGray" : "textDarkGray"))
                         .padding(.trailing, 40)
                 
             }
