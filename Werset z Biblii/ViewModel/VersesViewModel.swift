@@ -30,11 +30,17 @@ class VersesViewModel: ObservableObject {
     // Active Reminder Toogle
     @AppStorage("reminderToogle") var reminderToogle: Bool = false
     // Date for Picker Reminder Notification
-    @AppStorage("date") var date = Date()
+    @AppStorage("dateTimestamp") private var dateTimestamp: Double = Date().timeIntervalSince1970
     // Notification Request is ON?
     @AppStorage("notificationRequestIsOn") var notificationRequestIsOn: Bool = false
     // Daily notification is ON?
     @AppStorage("notificationDailyIsOn") var notificationDailyIsOn: Bool = false
+    
+    var date: Date {
+        get { Date(timeIntervalSince1970: dateTimestamp) }
+        set { dateTimestamp = newValue.timeIntervalSince1970 }
+    }
+    
     
     // User theme is dark or light
     var isDarkBackground: Bool {
