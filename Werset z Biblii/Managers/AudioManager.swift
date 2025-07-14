@@ -16,7 +16,11 @@ class AudioManager {
     private init() { }
 
     func playBackgroundMusic() {
-        guard let url = Bundle.main.url(forResource: "ChristianMusic", withExtension: "mp3") else {
+        
+        let randomNumber = Int.random(in: 1...9)
+                let fileName = "music\(randomNumber)"
+        
+        guard let url = Bundle.main.url(forResource: fileName, withExtension: "mp3") else {
             print("Nie znaleziono pliku.")
             return
         }
