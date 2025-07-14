@@ -16,13 +16,31 @@ struct VerseTextView: View {
     var body: some View {
         VStack {
             // Text verse
-            Text(vm.currentVerse?.text ?? "Błąd")
-                    .font(.custom("HappyTime", size: 22))
+            Text(vm.currentVerse?.date ?? "Błąd")
+                .font(.custom("Times New Roman", size: 25))
+                .bold()
                     .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                    .multilineTextAlignment(.center)
+                    .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
                     .padding(.vertical, 5)
                     .padding(.horizontal, 20)
             
+            Text(vm.currentVerse?.message ?? "Błąd")
+                .font(.custom("Times New Roman", size: 20))
+                .foregroundStyle(vm.isDarkBackground ? .white : .black)
+                .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
+                .multilineTextAlignment(.center)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 20)
+            
+            
+            Text(vm.currentVerse?.verse ?? "Błąd")
+                    .font(.custom("HappyTime", size: 22))
+                    .foregroundStyle(vm.isDarkBackground ? .white : .black)
+                    .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
+                    .multilineTextAlignment(.center)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
             
             HStack {
                 Spacer()
@@ -30,11 +48,18 @@ struct VerseTextView: View {
                 Text(vm.currentVerse?.reference ?? "Błąd")
                         .font(.callout)
                         .foregroundStyle(Color(vm.isDarkBackground ? "textLightGray" : "textDarkGray"))
+                        .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
                         .padding(.trailing, 40)
+                        .padding(.bottom, 20)
                 
             }
+            
+            Spacer()
+            
         }
-        .frame(height: UIScreen.main.bounds.height / 2)
+        .padding(.top, 70)
+        .padding(.bottom, 20)
+        .ignoresSafeArea()
     }
 }
 

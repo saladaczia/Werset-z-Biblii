@@ -75,7 +75,7 @@ class VersesViewModel: ObservableObject {
         guard !verses.isEmpty else { return }
 
         let calendar = Calendar.current
-        let startDate = calendar.date(from: DateComponents(year: 2025, month: 6, day: 29))!
+        let startDate = calendar.date(from: DateComponents(year: 2025, month: 7, day: 14))!
         let today = calendar.startOfDay(for: Date())
 
         let daysPassed = calendar.dateComponents([.day], from: startDate, to: today).day ?? 0

@@ -16,15 +16,6 @@ struct ButtonsView: View {
     @Binding var onClickedSettings: Bool
     
     
-    // Date formetter
-    private var formattedDate: String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "pl_PL")
-        formatter.dateStyle = .short
-        formatter.timeStyle = .none
-        return formatter.string(from: Date())
-    }
-    
     var body: some View {
         VStack {
             HStack {
@@ -42,15 +33,10 @@ struct ButtonsView: View {
                         
                     }
                 Spacer()
-                
-                // Data
-                Text(formattedDate)
-                    .font(.headline)
-                    .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                Spacer()
+
                 
                 if let verse = vm.currentVerse {
-                    ShareLink(item: "„\(verse.text)” – \(verse.reference)") {
+                    ShareLink(item: "\(verse.message)„[\(verse.verse)” – \(verse.reference)]") {
                         Image(systemName: "square.and.arrow.up")
                             .resizable()
                             .scaledToFit()

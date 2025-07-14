@@ -31,6 +31,7 @@ struct HomeView: View {
             Image(vm.selectedBackground)
                 .resizable()
                 .scaledToFill()
+                .blur(radius: 5)
                 .ignoresSafeArea()
                 .frame(width: screenWidth, height: screenHeight)
             
