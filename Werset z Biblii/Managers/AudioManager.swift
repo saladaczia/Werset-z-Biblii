@@ -17,7 +17,7 @@ class AudioManager {
 
     func playBackgroundMusic() {
         
-        let randomNumber = Int.random(in: 1...9)
+        let randomNumber = Int.random(in: 1...7)
                 let fileName = "music\(randomNumber)"
         
         guard let url = Bundle.main.url(forResource: fileName, withExtension: "mp3") else {

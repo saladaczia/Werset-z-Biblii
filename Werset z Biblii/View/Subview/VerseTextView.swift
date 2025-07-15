@@ -24,23 +24,13 @@ struct VerseTextView: View {
                     .padding(.vertical, 5)
                     .padding(.horizontal, 20)
             
-            Text(vm.currentVerse?.message ?? "Błąd")
-                .font(.custom("Times New Roman", size: 20))
-                .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
-                .multilineTextAlignment(.center)
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 20)
-            
-            
             Text(vm.currentVerse?.verse ?? "Błąd")
-                    .font(.custom("HappyTime", size: 22))
+                    .font(.custom("Savoye LET", size: 32))
                     .foregroundStyle(vm.isDarkBackground ? .white : .black)
                     .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
                     .multilineTextAlignment(.center)
-                    .padding(.vertical, 5)
+                    .padding(.top, 5)
                     .padding(.horizontal, 20)
-                    .padding(.top, 20)
             
             HStack {
                 Spacer()
@@ -49,10 +39,24 @@ struct VerseTextView: View {
                         .font(.callout)
                         .foregroundStyle(Color(vm.isDarkBackground ? "textLightGray" : "textDarkGray"))
                         .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
-                        .padding(.trailing, 40)
+                        .padding(.trailing, 35)
                         .padding(.bottom, 20)
                 
             }
+            
+            Divider()
+                .frame(height: 1)
+                .background(Color.gray.opacity(0.3))
+                .padding(.horizontal, 80)
+            
+            Text(vm.currentVerse?.message ?? "Błąd")
+                .font(.custom("Times New Roman", size: 20))
+                .foregroundStyle(vm.isDarkBackground ? .white : .black)
+                .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
+                .multilineTextAlignment(.center)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 20)
+            
             
             Spacer()
             

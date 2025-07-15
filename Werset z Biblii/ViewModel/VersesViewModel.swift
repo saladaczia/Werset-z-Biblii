@@ -23,7 +23,7 @@ class VersesViewModel: ObservableObject {
     
     // Background name arrays
     let illustrationsBgName = ["bg1-dark", "bg2-dark", "bg3"]
-    let natureBgName = ["bg4", "bg5-dark", "bg6", "bg7", "bg8-dark", "bg9-dark"]
+    let natureBgName = ["bg4", "bg5-dark", "bg6", "bg7", "bg8-dark", "bg9-dark", "bg10","bg11", "bg12"]
     // Saved selected theme
     @AppStorage("selectedBackground") var selectedBackground = "bg4"
     
