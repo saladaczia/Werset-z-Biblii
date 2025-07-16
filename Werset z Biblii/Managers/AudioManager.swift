@@ -21,7 +21,7 @@ class AudioManager {
                 let fileName = "music\(randomNumber)"
         
         guard let url = Bundle.main.url(forResource: fileName, withExtension: "mp3") else {
-            print("Nie znaleziono pliku.")
+            print("File not found.")
             return
         }
 
@@ -31,7 +31,7 @@ class AudioManager {
             player?.prepareToPlay()
             player?.play()
         } catch {
-            print("Błąd odtwarzania: \(error.localizedDescription)")
+            print("Eror playing music: \(error.localizedDescription)")
         }
     }
 
