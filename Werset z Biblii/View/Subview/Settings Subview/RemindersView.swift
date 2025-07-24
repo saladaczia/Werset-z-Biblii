@@ -68,6 +68,8 @@ struct RemindersView: View {
                     })
                     .padding(.top, 10)
                     
+                    Spacer()
+                    
                     // Set reminders settings
                     if showSetButton {
                         Button(action: {
@@ -99,10 +101,11 @@ struct RemindersView: View {
                                 .frame(height: 30)
                         }
                         .buttonStyle(.borderedProminent)
-                        .padding(.top, 20)
                     }
                 }
-                Spacer()
+                if !vm.reminderToogle {
+                    Spacer()
+                }
             }
             .padding(.horizontal, 20)
             .padding(.top, 10)

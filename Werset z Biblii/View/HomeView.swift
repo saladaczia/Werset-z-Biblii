@@ -53,6 +53,7 @@ struct HomeView: View {
                 // Settings View sheet
                     .sheet(isPresented: $vm.onClickedSettings) {
                         SettingView()
+                            .presentationDetents([.medium])
                     }
             
         }.statusBarHidden()

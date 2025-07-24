@@ -36,7 +36,7 @@ struct ButtonsView: View {
 
                 
                 if let verse = vm.currentVerse {
-                    ShareLink(item: "\(verse.message)„[\(verse.verse)” – \(verse.reference)]") {
+                    ShareLink(item: "\(verse.message)[„\(verse.verse)” – \(verse.reference)]") {
                         Image(systemName: "square.and.arrow.up")
                             .resizable()
                             .scaledToFit()
