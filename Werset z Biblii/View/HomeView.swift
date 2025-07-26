@@ -11,6 +11,7 @@ struct HomeView: View {
     
     // ViewModel
     @EnvironmentObject private var vm: VersesViewModel
+    @Environment(\.scenePhase) var scenePhase
     
     // Screen size area
     private let screenWidth = UIScreen.main.bounds.width
@@ -68,6 +69,13 @@ struct HomeView: View {
                 withAnimation {
                     animateShowVerseText = true
                 }
+        }
+        // if app is running from background verse must be reload
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .active {
+                print("reload")
+                vm.loadVersesFromJSON()
+            }
         }
     }
 }

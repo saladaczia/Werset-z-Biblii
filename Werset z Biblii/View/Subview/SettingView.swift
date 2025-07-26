@@ -14,6 +14,8 @@ struct SettingView: View {
     
     var body: some View {
         ZStack {
+            Color(.white)
+                .ignoresSafeArea()
             NavigationStack {
                 VStack() {
                     

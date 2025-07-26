@@ -49,12 +49,13 @@ class VersesViewModel: ObservableObject {
     
     
     init() {
+        print("load")
         loadVersesFromJSON()
         selectVerseForToday()
     }
 
     // Decode JSON data
-    private func loadVersesFromJSON() {
+        func loadVersesFromJSON() {
         guard let url = Bundle.main.url(forResource: "versesList", withExtension: "json") else {
             print("File verses.json not found.")
             return
