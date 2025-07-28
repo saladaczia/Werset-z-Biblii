@@ -6,11 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		4E390BC92E35617600785E3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4E48E4D02E0975840054048C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4E48E4D72E0975840054048C;
+			remoteInfo = "Werset z Biblii";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		4E390BC52E35617600785E3D /* WersetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WersetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E48E4D82E0975840054048C /* Werset z Biblii.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Werset z Biblii.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		4E390BC62E35617600785E3D /* WersetTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WersetTests;
+			sourceTree = "<group>";
+		};
 		4E48E4DA2E0975840054048C /* Werset z Biblii */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Werset z Biblii";
@@ -19,6 +35,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4E390BC22E35617600785E3D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4E48E4D52E0975840054048C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				4E48E4DA2E0975840054048C /* Werset z Biblii */,
+				4E390BC62E35617600785E3D /* WersetTests */,
 				4E48E4D92E0975840054048C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				4E48E4D82E0975840054048C /* Werset z Biblii.app */,
+				4E390BC52E35617600785E3D /* WersetTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +73,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4E390BC42E35617600785E3D /* WersetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4E390BCD2E35617600785E3D /* Build configuration list for PBXNativeTarget "WersetTests" */;
+			buildPhases = (
+				4E390BC12E35617600785E3D /* Sources */,
+				4E390BC22E35617600785E3D /* Frameworks */,
+				4E390BC32E35617600785E3D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4E390BCA2E35617600785E3D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				4E390BC62E35617600785E3D /* WersetTests */,
+			);
+			name = WersetTests;
+			packageProductDependencies = (
+			);
+			productName = WersetTests;
+			productReference = 4E390BC52E35617600785E3D /* WersetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4E48E4D72E0975840054048C /* Werset z Biblii */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4E48E4E52E0975850054048C /* Build configuration list for PBXNativeTarget "Werset z Biblii" */;
@@ -80,6 +128,10 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					4E390BC42E35617600785E3D = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 4E48E4D72E0975840054048C;
+					};
 					4E48E4D72E0975840054048C = {
 						CreatedOnToolsVersion = 26.0;
 					};
@@ -100,11 +152,19 @@
 			projectRoot = "";
 			targets = (
 				4E48E4D72E0975840054048C /* Werset z Biblii */,
+				4E390BC42E35617600785E3D /* WersetTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4E390BC32E35617600785E3D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4E48E4D62E0975840054048C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +175,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4E390BC12E35617600785E3D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4E48E4D42E0975840054048C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +191,57 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		4E390BCA2E35617600785E3D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4E48E4D72E0975840054048C /* Werset z Biblii */;
+			targetProxy = 4E390BC92E35617600785E3D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4E390BCB2E35617600785E3D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W6V4RR3FKW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.goldenapp.WersetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Werset z Biblii.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Werset z Biblii";
+			};
+			name = Debug;
+		};
+		4E390BCC2E35617600785E3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W6V4RR3FKW;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = pl.goldenapp.WersetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Werset z Biblii.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Werset z Biblii";
+			};
+			name = Release;
+		};
 		4E48E4E32E0975850054048C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -327,6 +444,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4E390BCD2E35617600785E3D /* Build configuration list for PBXNativeTarget "WersetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4E390BCB2E35617600785E3D /* Debug */,
+				4E390BCC2E35617600785E3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4E48E4D32E0975840054048C /* Build configuration list for PBXProject "Werset z Biblii" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -44,11 +44,7 @@ struct RemindersView: View {
                         .frame(maxWidth: 250, alignment: .leading)
                 }
                 .onChange(of: vm.reminderToogle, { oldValue, newValue in
-                    if vm.reminderToogle == false {
-                        // user set daily notification on off
-                        vm.removeDailyNotification()
-                        vm.notificationDailyIsOn = false
-                    }
+                    vm.handleReminderToggleChange(newValue)
                 })
                 .tint(.accentColor)
                 

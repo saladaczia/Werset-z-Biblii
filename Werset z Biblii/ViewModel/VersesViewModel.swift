@@ -76,7 +76,7 @@ class VersesViewModel: ObservableObject {
         guard !verses.isEmpty else { return }
 
         let calendar = Calendar.current
-        let startDate = calendar.date(from: DateComponents(year: 2025, month: 7, day: 14))!
+        let startDate = calendar.date(from: DateComponents(year: 2025, month: 7, day: 20))!
         let today = calendar.startOfDay(for: Date())
 
         let daysPassed = calendar.dateComponents([.day], from: startDate, to: today).day ?? 0
@@ -132,5 +132,15 @@ class VersesViewModel: ObservableObject {
     func removeDailyNotification() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["dailyVerseNotification"])
         print("powiadomienia usunięte")
+    }
+    
+    // Toogle function
+    func handleReminderToggleChange(_ isOn: Bool) {
+        reminderToogle = isOn
+        
+        if !isOn {
+            removeDailyNotification()
+            notificationDailyIsOn = false
+        }
     }
 }
