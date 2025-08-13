@@ -26,7 +26,7 @@ struct ThemesView: View {
                     // Section illustrations
                     HStack {
                         Text("Ilustracja")
-                            .foregroundStyle(Color.accentColor)
+                            .foregroundStyle(Color.gray)
                             .font(.title2)
                             .bold()
                         Spacer()
@@ -56,7 +56,7 @@ struct ThemesView: View {
                     // Section nature
                     HStack {
                         Text("Natura")
-                            .foregroundStyle(Color.accentColor)
+                            .foregroundStyle(Color.gray)
                             .font(.title2)
                             .bold()
                         Spacer()

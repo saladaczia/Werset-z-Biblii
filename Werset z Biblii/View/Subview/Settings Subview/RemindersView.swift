@@ -38,7 +38,7 @@ struct RemindersView: View {
                 Toggle(isOn: $vm.reminderToogle) {
                     Text("Codzienne powiadomienia")
                         .font(.title3)
-                        .foregroundStyle(Color.accentColor)
+                        .foregroundStyle(Color.white)
                     Text("Codziennie otrzymujesz powiadomienia o nowych wersach")
                         .font(.caption)
                         .frame(maxWidth: 250, alignment: .leading)

@@ -19,7 +19,7 @@ struct Werset_z_BibliiApp: App {
         WindowGroup {
             HomeView()
                 .environmentObject(vm)
-                .preferredColorScheme(.light)
+                .preferredColorScheme(.dark)
                 .onAppear {
                     // Play music in background
                     AudioManager.shared.playBackgroundMusic()
