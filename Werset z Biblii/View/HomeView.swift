@@ -74,7 +74,9 @@ struct HomeView: View {
         .onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .active {
                 print("reload")
+                
                 vm.loadVersesFromJSON()
+                vm.selectVerseForToday()
             }
         }
     }

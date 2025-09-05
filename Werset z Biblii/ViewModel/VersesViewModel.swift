@@ -72,7 +72,7 @@ class VersesViewModel: ObservableObject {
     
     
     // Get Verse for today
-    private func selectVerseForToday() {
+    func selectVerseForToday() {
         guard !verses.isEmpty else { return }
 
         let calendar = Calendar.current
