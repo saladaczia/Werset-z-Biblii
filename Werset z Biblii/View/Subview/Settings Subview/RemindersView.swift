@@ -45,6 +45,9 @@ struct RemindersView: View {
                 }
                 .onChange(of: vm.reminderToogle, { oldValue, newValue in
                     vm.handleReminderToggleChange(newValue)
+                    if !vm.notificationDailyIsOn {
+                        showSetButton = true
+                    }
                 })
                 .tint(.accentColor)
                 
