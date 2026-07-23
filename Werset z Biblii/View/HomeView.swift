@@ -32,7 +32,6 @@ struct HomeView: View {
             Image(vm.selectedBackground)
                 .resizable()
                 .scaledToFill()
-                .blur(radius: 2)
                 .ignoresSafeArea()
                 .frame(width: screenWidth, height: screenHeight)
             
@@ -45,6 +44,7 @@ struct HomeView: View {
                 Spacer()
             }
             .frame(width: screenWidth, height: screenHeight)
+            
             
             // Buttons View
                 ButtonsView(onClickedSettings: $vm.onClickedSettings)

@@ -20,7 +20,7 @@ struct VerseTextView: View {
                 .font(.custom("Times New Roman", size: 25))
                 .bold()
                     .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                    .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
+                   // .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
                     .padding(.vertical, 5)
                     .padding(.horizontal, 20)
             
@@ -28,7 +28,7 @@ struct VerseTextView: View {
                     .font(.custom("Times New Roman", size: 22))
                     .italic()
                     .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                    .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
+                    //.shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
                     .multilineTextAlignment(.center)
                     .padding(.top, 5)
                     .padding(.bottom, 2)
@@ -41,7 +41,7 @@ struct VerseTextView: View {
                         .font(.custom("Times New Roman", size: 18))
                         .bold()
                         .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                        .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
+                       // .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
                         .padding(.trailing, 60)
                         .padding(.bottom, 20)
                 
@@ -49,14 +49,14 @@ struct VerseTextView: View {
             // Line
             Divider()
                 .frame(height: 1)
-                .background(Color.gray.opacity(0.3))
+                .background(vm.selectedBackground == "bg6" ? Color.black.opacity(0.3) : Color.gray.opacity(0.3))
                 .padding(.horizontal, 80)
             
             // Text message
             Text(vm.currentVerse?.message ?? "Błąd")
                 .font(.custom("Times New Roman", size: 20))
                 .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
+                //.shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
                 .multilineTextAlignment(.center)
                     .padding(.vertical, 5)
                     .padding(.horizontal, 20)
@@ -68,6 +68,7 @@ struct VerseTextView: View {
         .padding(.top, 70)
         .padding(.bottom, 20)
         .ignoresSafeArea()
+        
     }
 }
 
