@@ -11,11 +11,18 @@ import AVFoundation
 class AudioManager {
     static let shared = AudioManager()
     
+    private let audioQueue = DispatchQueue(label: "pl.goldenapp.Werset-z-Biblii.audio")
     private var player: AVAudioPlayer?
 
     private init() { }
 
     func playBackgroundMusic() {
+        audioQueue.async { [self] in
+            startBackgroundMusic()
+        }
+    }
+
+    private func startBackgroundMusic() {
         
         let randomNumber = Int.random(in: 1...7)
                 let fileName = "music\(randomNumber)"
@@ -36,6 +43,8 @@ class AudioManager {
     }
 
     func stopMusic() {
-        player?.stop()
+        audioQueue.async { [self] in
+            player?.stop()
+        }
     }
 }

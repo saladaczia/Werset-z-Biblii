@@ -13,7 +13,7 @@ struct SettingView: View {
     @EnvironmentObject private var vm: VersesViewModel
     
     var body: some View {
-            NavigationView {
+            NavigationStack {
                         List {
                             Section(header: Text("WYGLĄD")) {
                                 NavigationLink {
@@ -47,10 +47,10 @@ struct SettingView: View {
                         .navigationTitle("Ustawienia")
                         .toolbar {
                             ToolbarItem(placement: .topBarLeading) {
-                                Image(systemName: "xmark")
-                                    .onTapGesture {
-                                        vm.onClickedSettings.toggle()
-                                    }
+                                Button("Zamknij", systemImage: "xmark") {
+                                    vm.onClickedSettings = false
+                                }
+                                .labelStyle(.iconOnly)
                             }
                         }
                     }
@@ -60,4 +60,5 @@ struct SettingView: View {
 #Preview {
     SettingView()
         .environmentObject(VersesViewModel())
+        .environmentObject(ReminderStore())
 }

@@ -24,10 +24,10 @@ struct WersetTests {
 
         @Test func testIsDarkBackgroundFlag() {
             let vm = VersesViewModel()
-            vm.selectedBackground = "bg1-dark"
-            #expect(vm.isDarkBackground == true, "The background should be recognized as dark.")
+            vm.selectedBackground = "jesus01"
+            #expect(vm.isDarkBackground == false, "The new gallery uses light backgrounds for dark text.")
 
-            vm.selectedBackground = "bg4"
+            vm.selectedBackground = "nature01"
             #expect(vm.isDarkBackground == false, "The background should be recognized as light.")
         }
 

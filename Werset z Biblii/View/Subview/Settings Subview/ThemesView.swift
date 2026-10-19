@@ -1,93 +1,69 @@
-//
-//  ThemesView.swift
-//  Werset z Biblii
-//
-//  Created by Maciej Sołoducha on 02/07/2025.
-//
-
 import SwiftUI
 
 struct ThemesView: View {
-    
-    // ViewModel
     @EnvironmentObject private var vm: VersesViewModel
-    
-    // colums for LazyVGrid
-    let columns = [
-            GridItem(.flexible()),
-            GridItem(.flexible()),
-            GridItem(.flexible())
-        ]
-    
+    private let columns = Array(repeating: GridItem(.flexible()), count: 3)
+
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 20) {
-                    // Section illustrations
-                    HStack {
-                        Text("Ilustracja")
-                            .foregroundStyle(Color.gray)
-                            .font(.title2)
-                            .bold()
-                        Spacer()
-                    }
-                    
-                    // Themes grid (illustrations)
-                    HStack {
-                        Grid {
-                            GridRow {
-                                ForEach(vm.illustrationsBgName, id: \.self) { item in
-                                    Image(item)
-                                        .resizable()
-                                        .frame(maxWidth: .infinity, maxHeight: 200)
-                                        .cornerRadius(20)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 20)
-                                                .stroke(vm.selectedBackground == item ? Color.blue : Color.clear, lineWidth: 4)
-                                        )
-                                        .onTapGesture {
-                                            vm.selectedBackground = item
-                                        }
-                                }
+                VStack(alignment: .leading, spacing: 24) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Toggle("Codziennie inne tło", isOn: $vm.dailyBackgroundEnabled)
+                            .font(.headline)
+                        Picker("Zmieniaj tła", selection: $vm.backgroundRotationScope) {
+                            ForEach(BackgroundRotationScope.allCases) { scope in
+                                Text(scope.title).tag(scope)
                             }
                         }
+                        .pickerStyle(.segmented)
+                        Text("Każdego dnia kolejny motyw z wybranej kategorii. Ręczny wybór tła wyłącza tę opcję.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
                     }
-                    
-                    // Section nature
-                    HStack {
-                        Text("Natura")
-                            .foregroundStyle(Color.gray)
-                            .font(.title2)
-                            .bold()
-                        Spacer()
-                    }
-                    // Theme grid (Nature)
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(vm.natureBgName, id: \.self) { item in
-                            Image(item)
-                                .resizable()
-                                .frame(maxWidth: .infinity, maxHeight: 200)
-                                .cornerRadius(20)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .stroke(vm.selectedBackground == item ? Color.blue : Color.clear, lineWidth: 4)
-                                )
-                                .onTapGesture {
-                                    vm.selectedBackground = item
-                                }
-                        }
-                    }
-                    Spacer()
+                    .padding(16)
+                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 20))
+                    themeSection("Jezus", themes: vm.jesusThemes)
+                    themeSection("Natura", themes: vm.natureThemes)
                 }
-                .padding(.horizontal, 20)
+                .padding(20)
             }
             .scrollIndicators(.hidden)
+            .navigationTitle("Motywy")
         }
-        .navigationTitle("Motywy")
+    }
+
+    private func themeSection(_ title: String, themes: [(name: String, title: String)]) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(title).font(.title2.bold()).foregroundStyle(.secondary)
+            LazyVGrid(columns: columns, spacing: 20) {
+                ForEach(themes, id: \.name) { theme in
+                    Button { vm.chooseBackground(theme.name) } label: {
+                        VStack(spacing: 8) {
+                            Image(theme.name)
+                                .resizable()
+                                .aspectRatio(4.0 / 9.0, contentMode: .fit)
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(vm.selectedBackground == theme.name ? Color.blue : Color.clear, lineWidth: 3)
+                                }
+                            Text(theme.title)
+                                .font(.caption)
+                                .foregroundStyle(.primary)
+                                .multilineTextAlignment(.center)
+                                .frame(minHeight: 32, alignment: .top)
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(theme.title)
+                    .accessibilityAddTraits(vm.selectedBackground == theme.name ? .isSelected : [])
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    ThemesView()
-        .environmentObject(VersesViewModel())
+    ThemesView().environmentObject(VersesViewModel())
 }

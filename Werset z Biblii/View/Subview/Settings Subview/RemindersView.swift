@@ -1,150 +1,83 @@
-//
-//  RemindersView.swift
-//  Werset z Biblii
-//
-//  Created by Maciej Sołoducha on 02/07/2025.
-//
-
 import SwiftUI
 
 struct RemindersView: View {
-    
-    // ViewModel
-    @EnvironmentObject private var vm: VersesViewModel
-    
-    // Dismiss screen
-    @Environment(\.dismiss) private var dismiss
-    // Scene Phase
+    @EnvironmentObject private var reminders: ReminderStore
     @Environment(\.scenePhase) private var scenePhase
-    
-    // Temp date for Picker
-    @State private var tempTime: Date = Date()
-    
-    // Show set button
-    @State var showSetButton = false
-    
-    // Show set button
-    @State var showPicker = false
-    
-    // Show alert
-    @State private var showAlert = false
-        
-    
+    @Environment(\.openURL) private var openURL
+    @State private var selectedTime = Date()
+    @State private var loaded = false
+
+    private var timeChanged: Bool {
+        let parts = Calendar.current.dateComponents([.hour, .minute], from: selectedTime)
+        return parts.hour != reminders.hour || parts.minute != reminders.minute
+    }
+
     var body: some View {
-        NavigationStack {
-            // Main VStack
-            VStack {
-                // MARK: - Reminder toogle
-                Toggle(isOn: $vm.reminderToogle) {
-                    Text("Codzienne powiadomienia")
-                        .font(.title3)
-                        .foregroundStyle(Color.white)
-                    Text("Codziennie otrzymujesz powiadomienia o nowych wersach")
-                        .font(.caption)
-                        .frame(maxWidth: 250, alignment: .leading)
+        Form {
+            Section {
+                Toggle("Codzienne przypomnienie", isOn: Binding(
+                    get: { reminders.enabled },
+                    set: { value in Task { await reminders.setEnabled(value, time: selectedTime) } }
+                ))
+                .disabled(reminders.busy || !loaded)
+                DatePicker("Godzina", selection: $selectedTime, displayedComponents: .hourAndMinute)
+                    .disabled(reminders.busy || !loaded)
+                if reminders.enabled && timeChanged {
+                    Button("Zapisz godzinę") { Task { await reminders.save(time: selectedTime) } }
+                        .disabled(reminders.busy)
                 }
-                .onChange(of: vm.reminderToogle, { oldValue, newValue in
-                    vm.handleReminderToggleChange(newValue)
-                    if !vm.notificationDailyIsOn {
-                        showSetButton = true
+            } footer: {
+                Text("Jedno przypomnienie dziennie o wybranej godzinie lokalnej. Dotknięcie powiadomienia otwiera dzisiejszą refleksję.")
+            }
+
+            Section("Status") {
+                if reminders.busy {
+                    HStack { ProgressView(); Text("Sprawdzanie ustawień…") }
+                } else if reminders.authorization == .denied {
+                    Label("Powiadomienia zablokowane w iOS", systemImage: "bell.slash")
+                        .foregroundStyle(.orange)
+                    Text("Zezwól na powiadomienia w ustawieniach iPhone’a. Po powrocie aplikacja sprawdzi zgodę ponownie.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                    Button("Otwórz ustawienia iOS") {
+                        if let url = URL(string: UIApplication.openNotificationSettingsURLString) { openURL(url) }
                     }
-                })
-                .tint(.accentColor)
-                
-                // MARK: - Reminder Settings
-                // Choose time for reminders
-                if vm.reminderToogle {
-                    DatePicker(
-                            "Godzina powiadomienia:",
-                            selection: $tempTime,
-                            displayedComponents: [.hourAndMinute]
-                        )
-                    .onChange(of: tempTime, { oldValue, newValue in
-                        // When time is changed then button is showing
-                        if tempTime != vm.date {
-                            showSetButton = true
-                        }
-                    })
-                    .padding(.top, 10)
-                    
-                    Spacer()
-                    
-                    // Set reminders settings
-                    if showSetButton {
-                        Button(action: {
-                            vm.date = tempTime // Set a reminders time
-                            // Time logic from Date()
-                            let calendar = Calendar.current
-                            let hour = calendar.component(.hour, from: vm.date)
-                            let minute = calendar.component(.minute, from: vm.date)
-                            // Set notifications according to user settings
-                            
-                            if vm.notificationRequestIsOn {
-                                if !vm.notificationDailyIsOn { // If notification is Off
-                                        vm.activeDailyNotification(hour, minute)
-                                    } else { // If notifications is On - We must first remove previous notifications
-                                        vm.removeDailyNotification()
-                                        vm.activeDailyNotification(hour, minute)
-                                    }
-                                vm.notificationDailyIsOn = true // Daily notifications is ON
-                                dismiss() // Hidden screen
-                            } else {
-                                // user must notificaction On in system
-                                vm.reminderToogle = false
-                                // -> Alert for user must change notification settings in iOS system
-                                showAlert = true
-                            }
-                        }) {
-                            Text("Ustaw")
-                                .frame(maxWidth: 100)
-                                .frame(height: 30)
-                        }
-                        .buttonStyle(.borderedProminent)
+                } else if reminders.enabled && reminders.scheduled {
+                    Label {
+                        Text("Codziennie o \(reminders.time.formatted(date: .omitted, time: .shortened))")
+                    } icon: { Image(systemName: "checkmark.circle.fill").foregroundStyle(.green) }
+                    if reminders.authorization == .provisional {
+                        Text("iOS dostarcza te powiadomienia po cichu.").font(.footnote).foregroundStyle(.secondary)
                     }
+                } else if reminders.enabled {
+                    Label("Przypomnienie nie jest zaplanowane", systemImage: "exclamationmark.circle")
+                    Button("Spróbuj ponownie") { Task { await reminders.refresh() } }
+                } else {
+                    Label("Przypomnienia wyłączone", systemImage: "bell.slash")
+                        .foregroundStyle(.secondary)
                 }
-                if !vm.reminderToogle {
-                    Spacer()
+                if let error = reminders.errorMessage {
+                    Text(error).font(.footnote).foregroundStyle(.red)
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 10)
-            .alert(isPresented: $showAlert) {
-                Alert(
-                    title: Text("Zezwól na powiadomienia"),
-                    message: Text("Przejdź do ustawień i zezwól tej aplikacji na wysyłanie powiadomień."),
-                    primaryButton: .default(Text("Ustawienia")) {
-                        if let appSettings = URL(string: UIApplication.openSettingsURLString),
-                           UIApplication.shared.canOpenURL(appSettings) {
-                            UIApplication.shared.open(appSettings)
-                        }
-                    },
-                    secondaryButton: .cancel() {
-                        print("Canceled")
-                    }
-                )
-            }
+            Section {
+                Label("Chwila na refleksję", systemImage: "book.closed")
+                    .font(.headline)
+                Text("Werset na dziś\nZatrzymaj się na chwilę. Dzisiejszy werset i refleksja już czekają.")
+                    .font(.subheadline).foregroundStyle(.secondary)
+            } header: { Text("Treść przypomnienia") }
         }
         .navigationTitle("Powiadomienia")
-        .onAppear {
-            tempTime = vm.date // Set current time to picker
-            if !vm.notificationRequestIsOn {
-                vm.reminderToogle = false
-            }
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            if !loaded { selectedTime = reminders.time; loaded = true }
+            await reminders.refresh()
         }
-        .onDisappear() {
-            if !vm.notificationDailyIsOn { // If the user forgot to install the device -> hidden a reminders settings and set toogle to off
-                vm.reminderToogle = false
-            }
-        }
-        .onChange(of: scenePhase) { oldValue, newValue in
-            if newValue == .active {
-                vm.requestNotificationPermission()
-            }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { Task { await reminders.refresh() } }
         }
     }
 }
 
 #Preview {
-    RemindersView()
-        .environmentObject(VersesViewModel())
+    NavigationStack { RemindersView().environmentObject(ReminderStore()) }
 }

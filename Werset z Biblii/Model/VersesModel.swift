@@ -43,3 +43,11 @@ struct VersesModel: Identifiable, Codable {
         try container.encode(reference, forKey: .reference)
     }
 }
+
+extension VersesModel {
+    // JSON identifiers are regenerated on decode; content provides a persistent key.
+    var favoriteKey: String {
+        let data = try? JSONEncoder().encode([date, verse, reference, message])
+        return data?.base64EncodedString() ?? ""
+    }
+}

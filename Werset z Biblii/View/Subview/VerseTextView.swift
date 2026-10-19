@@ -9,6 +9,8 @@ import SwiftUI
 
 struct VerseTextView: View {
     
+    var fillsHeight = true
+
     // ViewModel
     @EnvironmentObject private var vm: VersesViewModel
    
@@ -49,7 +51,7 @@ struct VerseTextView: View {
             // Line
             Divider()
                 .frame(height: 1)
-                .background(vm.selectedBackground == "bg6" ? Color.black.opacity(0.3) : Color.gray.opacity(0.3))
+                .background(Color.gray.opacity(0.3))
                 .padding(.horizontal, 80)
             
             // Text message
@@ -62,7 +64,7 @@ struct VerseTextView: View {
                     .padding(.horizontal, 20)
             
             
-            Spacer()
+            if fillsHeight { Spacer() }
             
         }
         .padding(.top, 70)
