@@ -1,0 +1,13 @@
+{
+  "appId": "6748396363",
+  "version": "1.3.2",
+  "build": "1",
+  "buildId": "f0337f1a-4019-4855-bc03-4d4040820d9b",
+  "appStoreVersionId": "5202709f-e678-4601-b5f4-e960dea897eb",
+  "state": "WAITING_FOR_REVIEW",
+  "releaseType": "AFTER_APPROVAL",
+  "verifiedAt": "2026-10-29T19:19:23.564023+00:00",
+  "tests": "33 tests passed in 9 suites",
+  "codeCommit": "6c0b906",
+  "screenshots": "10 screenshots inherited from 1.3.1, all COMPLETE"
+}
