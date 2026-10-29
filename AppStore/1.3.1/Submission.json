@@ -1,0 +1,81 @@
+{
+  "appId": "6748396363",
+  "version": "1.3.1",
+  "build": "1",
+  "buildId": "9b8ce8e6-0d02-40e4-8f05-4c5ee921f94c",
+  "appStoreVersionId": "3e603628-e87b-4b9e-8633-0b8dbbcfb284",
+  "state": "WAITING_FOR_REVIEW",
+  "releaseType": "AFTER_APPROVAL",
+  "screenshots": [
+    {
+      "displayType": "APP_IPHONE_67",
+      "files": [
+        {
+          "name": "01-refleksja.png",
+          "state": "COMPLETE",
+          "width": 1290,
+          "height": 2796
+        },
+        {
+          "name": "02-motywy.png",
+          "state": "COMPLETE",
+          "width": 1320,
+          "height": 2868
+        },
+        {
+          "name": "03-ulubione.png",
+          "state": "COMPLETE",
+          "width": 1320,
+          "height": 2868
+        },
+        {
+          "name": "04-udostepnianie.jpg",
+          "state": "COMPLETE",
+          "width": 1320,
+          "height": 2868
+        },
+        {
+          "name": "05-widgety.png",
+          "state": "COMPLETE",
+          "width": 1320,
+          "height": 2868
+        }
+      ]
+    },
+    {
+      "displayType": "APP_IPHONE_61",
+      "files": [
+        {
+          "name": "01-refleksja.png",
+          "state": "COMPLETE",
+          "width": 1206,
+          "height": 2622
+        },
+        {
+          "name": "02-motywy.png",
+          "state": "COMPLETE",
+          "width": 1206,
+          "height": 2622
+        },
+        {
+          "name": "03-ulubione.png",
+          "state": "COMPLETE",
+          "width": 1206,
+          "height": 2622
+        },
+        {
+          "name": "04-udostepnianie.png",
+          "state": "COMPLETE",
+          "width": 1206,
+          "height": 2622
+        },
+        {
+          "name": "05-widgety.png",
+          "state": "COMPLETE",
+          "width": 1206,
+          "height": 2622
+        }
+      ]
+    }
+  ]
+}

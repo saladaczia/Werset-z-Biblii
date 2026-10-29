@@ -17,3 +17,10 @@ swift render.swift /pełna/ścieżka/do/AppStore-PL
 
 Wymiary sprawdzone 29 października 2026:
 https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/
+
+Pliki przyjęte przez App Store Connect przy zgłoszeniu 1.3.1:
+- APP_IPHONE_61: wszystkie pięć PNG z iPhone-6.3.
+- APP_IPHONE_67: 01 z upload-1290 (1290 × 2796), 04 z upload-jpeg,
+  pozostałe PNG z iPhone-6.9. Układ grafik bez zmian.
+Warianty przygotowano po błędach przetwarzania pierwotnych plików przez Apple.
+Status zgłoszenia i dokładne wymiary: ../Submission.json.
