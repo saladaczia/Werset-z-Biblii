@@ -32,6 +32,7 @@ class VersesViewModel: ObservableObject {
     private let backgroundStore: UserDefaults
     private let favoritesStore: UserDefaults
     private let now: () -> Date
+    private var restoringBackgroundSettings = true
 
     var latestAvailableIndex: Int {
         let days = Calendar.current.dateComponents([.day], from: firstDate,
@@ -56,6 +57,11 @@ class VersesViewModel: ObservableObject {
         if !favoriteKeys.insert(verse.favoriteKey).inserted {
             favoriteKeys.remove(verse.favoriteKey)
         }
+        favoritesStore.set(Array(favoriteKeys), forKey: "reflectionFavorites.v1")
+    }
+
+    func removeFavorite(_ verse: VersesModel) {
+        favoriteKeys.remove(verse.favoriteKey)
         favoritesStore.set(Array(favoriteKeys), forKey: "reflectionFavorites.v1")
     }
 
@@ -129,7 +135,7 @@ class VersesViewModel: ObservableObject {
 
     @Published var backgroundRotationScope: BackgroundRotationScope = .all {
         didSet {
-            guard backgroundRotationScope != oldValue else { return }
+            guard !restoringBackgroundSettings, backgroundRotationScope != oldValue else { return }
             backgroundStore.set(backgroundRotationScope.rawValue, forKey: "backgroundRotationScope")
             if dailyBackgroundEnabled {
                 ensureBackgroundInRotationScope()
@@ -154,7 +160,7 @@ class VersesViewModel: ObservableObject {
 
     @Published var dailyBackgroundEnabled = false {
         didSet {
-            guard dailyBackgroundEnabled != oldValue else { return }
+            guard !restoringBackgroundSettings, dailyBackgroundEnabled != oldValue else { return }
             backgroundStore.set(dailyBackgroundEnabled, forKey: "dailyBackgroundEnabled")
             if dailyBackgroundEnabled {
                 ensureBackgroundInRotationScope()
@@ -190,6 +196,13 @@ class VersesViewModel: ObservableObject {
         markBackgroundDay()
     }
     
+    var widgetPreferences: WidgetPreferences {
+        let timestamp = backgroundStore.double(forKey: "backgroundRotationDate")
+        return WidgetPreferences(background: selectedBackground, rotates: dailyBackgroundEnabled,
+                                 themes: rotatingThemeNames,
+                                 anchor: timestamp == 0 ? Calendar.current.startOfDay(for: now()) : Date(timeIntervalSince1970: timestamp))
+    }
+
     // User theme is dark or light
     var isDarkBackground: Bool {
         selectedBackground.lowercased().contains("dark")
@@ -204,9 +217,13 @@ class VersesViewModel: ObservableObject {
         selectedBackground = storedBackground
         backgroundRotationScope = BackgroundRotationScope(rawValue: backgroundStore.string(forKey: "backgroundRotationScope") ?? "all") ?? .all
         dailyBackgroundEnabled = backgroundStore.bool(forKey: "dailyBackgroundEnabled")
+        // Restoring the toggle must not overwrite yesterday's rotation date.
+        restoringBackgroundSettings = false
         if !allThemeNames.contains(storedBackground) {
             // Removed/unknown themes always migrate to the first visible gallery item.
             markBackgroundDay()
+        } else if dailyBackgroundEnabled {
+            ensureBackgroundInRotationScope()
         }
         refreshBackgroundForCurrentDay()
         favoriteKeys = Set(favoritesStore.stringArray(forKey: "reflectionFavorites.v1") ?? [])

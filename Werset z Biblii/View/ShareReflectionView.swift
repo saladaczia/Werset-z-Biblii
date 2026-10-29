@@ -43,17 +43,46 @@ enum ReflectionExporter {
         return renderer.uiImage
     }
 
+    /// The top 55% of gallery assets is reserved for text. Account for both
+    /// the reader's centered aspect-fill crop and the TikTok crop from the top.
+    static func portraitTextHeight(assetSize: CGSize, readerSize: CGSize) -> CGFloat {
+        let scale = max(readerSize.width / assetSize.width, readerSize.height / assetSize.height)
+        let scaledHeight = assetSize.height * scale
+        let portraitHeight = readerSize.width * 16 / 9
+        return min(portraitHeight * 0.5,
+                   (readerSize.height - scaledHeight) / 2 + scaledHeight * 0.55
+                   - (readerSize.height - portraitHeight) - readerSize.width * 0.04)
+    }
+
+    static func portraitTextImage(vm: VersesViewModel, width: CGFloat, maxHeight: CGFloat) -> UIImage? {
+        // Start large and use the largest complete layout that fits above the artwork.
+        for step in 0...42 {
+            let scale = (1.30 - CGFloat(step) * 0.025) * width / 402
+            let candidate: UIImage? = autoreleasepool {
+                let renderer = ImageRenderer(content: PortraitReflectionText(fontScale: scale)
+                    .environmentObject(vm)
+                    .environment(\.dynamicTypeSize, .medium)
+                    .frame(width: width)
+                    .fixedSize(horizontal: false, vertical: true))
+                renderer.scale = 3
+                guard let image = renderer.uiImage, image.size.height <= maxHeight else { return nil }
+                return image
+            }
+            if let candidate { return candidate }
+        }
+        return nil
+    }
+
     static func portrait(vm: VersesViewModel, size: CGSize) -> UIImage? {
-        let measure = ImageRenderer(content: VerseTextView(fillsHeight: false)
-            .environmentObject(vm).frame(width: size.width).fixedSize(horizontal: false, vertical: true))
-        guard let measured = measure.uiImage else { return nil }
+        guard let asset = UIImage(named: vm.selectedBackground) else { return nil }
+        let textHeight = portraitTextHeight(assetSize: asset.size, readerSize: size)
+        guard let text = portraitTextImage(vm: vm, width: size.width, maxHeight: textHeight) else { return nil }
         let backgroundRenderer = ImageRenderer(content: ReflectionCanvas(size: size, textOpacity: 0)
             .environmentObject(vm))
         backgroundRenderer.proposedSize = ProposedViewSize(size)
         backgroundRenderer.scale = 3
         guard let background = backgroundRenderer.uiImage,
-              let croppedBackground = croppedBackground(background, contentHeight: measured.size.height),
-              let text = textImage(vm: vm, size: croppedBackground.size) else { return nil }
+              let croppedBackground = croppedBackground(background, contentHeight: text.size.height) else { return nil }
         let format = UIGraphicsImageRendererFormat()
         format.scale = croppedBackground.scale
         format.opaque = true
@@ -63,7 +92,7 @@ enum ReflectionExporter {
         }
     }
 
-    // Crop only the background from the top. Text is rendered separately at its original position.
+    // Crop only the background from the top. Text is laid out separately within the clear upper area.
     static func croppedBackground(_ image: UIImage, contentHeight: CGFloat) -> UIImage? {
         let height = image.size.width * 16 / 9
         guard height <= image.size.height, contentHeight + 20 <= height,
@@ -72,6 +101,35 @@ enum ReflectionExporter {
         guard let crop = source.cropping(to: CGRect(x: 0, y: source.height - pixelHeight,
                                                    width: source.width, height: pixelHeight)) else { return nil }
         return UIImage(cgImage: crop, scale: image.scale, orientation: .up)
+    }
+}
+
+/// Compact export typography; the on-screen reader keeps its existing font sizes.
+private struct PortraitReflectionText: View {
+    let fontScale: CGFloat
+    @EnvironmentObject private var vm: VersesViewModel
+
+    var body: some View {
+        VStack(spacing: 7 * fontScale) {
+            Text(vm.currentVerse?.date ?? "")
+                .font(.custom("Times New Roman", size: 25 * fontScale)).bold()
+            Text(vm.currentVerse?.verse ?? "")
+                .font(.custom("Times New Roman", size: 22 * fontScale)).italic()
+            Text(vm.currentVerse?.reference ?? "")
+                .font(.custom("Times New Roman", size: 16 * fontScale)).bold()
+                .frame(maxWidth: .infinity, alignment: .center)
+            Divider().overlay(Color.gray.opacity(0.3))
+                .padding(.horizontal, 40 * fontScale)
+                .padding(.vertical, 3 * fontScale)
+            Text(vm.currentVerse?.message ?? "")
+                .font(.custom("Times New Roman", size: 20 * fontScale))
+        }
+        .multilineTextAlignment(.center)
+        .foregroundStyle(Color.black)
+        .fixedSize(horizontal: false, vertical: true)
+        .padding(.horizontal, 26 * fontScale)
+        .padding(.top, 30 * fontScale)
+        .padding(.bottom, 8 * fontScale)
     }
 }
 
@@ -102,7 +160,7 @@ struct ShareReflectionView: View {
                     .disabled(portrait == nil)
                     Text(portrait == nil
                          ? "Cały ekran zachowuje pełny tekst refleksji."
-                         : "Format 9:16 przycina górę tła. Dół obrazu i cały tekst pozostają.")
+                         : "Format 9:16 zachowuje dół tła. Rozmiar tekstu dopasowuje się do wolnej przestrzeni u góry.")
                         .font(.footnote).foregroundStyle(.secondary)
                     Button { showActivity = true } label: {
                         Label("Udostępnij zdjęcie", systemImage: "square.and.arrow.up")

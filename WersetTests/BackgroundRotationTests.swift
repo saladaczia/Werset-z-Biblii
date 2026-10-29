@@ -4,6 +4,26 @@ import Testing
 
 @MainActor
 struct BackgroundRotationTests {
+    @Test(arguments: BackgroundRotationScope.allCases)
+    func coldLaunchOnNextDayAdvancesPersistedBackground(scope: BackgroundRotationScope) throws {
+        let suite = "BackgroundTests.\(UUID().uuidString)"
+        let store = try #require(UserDefaults(suiteName: suite))
+        defer { store.removePersistentDomain(forName: suite) }
+        let calendar = Calendar.current
+        var clock = calendar.date(from: DateComponents(year: 2026, month: 10, day: 24, hour: 23, minute: 59))!
+        var vm: VersesViewModel? = VersesViewModel(backgroundStore: store, now: { clock })
+        vm!.backgroundRotationScope = scope
+        vm!.dailyBackgroundEnabled = true
+        let names = vm!.rotatingThemeNames
+        let previous = vm!.selectedBackground
+        vm = nil
+        clock = calendar.date(byAdding: .minute, value: 2, to: clock)!
+        let restarted = VersesViewModel(backgroundStore: store, now: { clock })
+        let index = try #require(names.firstIndex(of: previous))
+        #expect(restarted.selectedBackground == names[(index + 1) % names.count])
+        #expect(VersesViewModel(backgroundStore: store, now: { clock }).selectedBackground == restarted.selectedBackground)
+    }
+
     @Test func removedAndUnknownThemesMigrateToFirstGalleryItem() throws {
         let suite = "BackgroundTests.\(UUID().uuidString)"
         let store = try #require(UserDefaults(suiteName: suite))

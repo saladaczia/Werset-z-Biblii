@@ -5,6 +5,31 @@ import UIKit
 
 @MainActor
 struct ReflectionTests {
+    @Test func removingFavoriteFromListPersistsWithoutChangingSelectedDay() throws {
+        let suite = "ReflectionTests.\(UUID().uuidString)"
+        let store = try #require(UserDefaults(suiteName: suite))
+        defer { store.removePersistentDomain(forName: suite) }
+        let vm = VersesViewModel(favoritesStore: store, backgroundStore: store)
+        vm.selectVerse(at: 0)
+        vm.toggleFavorite()
+        let first = try #require(vm.currentVerse)
+        vm.selectVerse(at: 1)
+        vm.toggleFavorite()
+        let second = try #require(vm.currentVerse)
+        vm.removeFavorite(first)
+        vm.removeFavorite(first)
+        #expect(vm.selectedIndex == 1)
+        #expect(vm.isCurrentFavorite)
+        #expect(vm.favoriteVerses.map(\.favoriteKey) == [second.favoriteKey])
+        let restored = VersesViewModel(favoritesStore: store, backgroundStore: store)
+        #expect(restored.favoriteVerses.map(\.favoriteKey) == [second.favoriteKey])
+        vm.removeFavorite(second)
+        #expect(vm.favoriteVerses.isEmpty)
+        #expect(!vm.isCurrentFavorite)
+        #expect(vm.selectedIndex == 1)
+        #expect(VersesViewModel(favoritesStore: store, backgroundStore: store).favoriteVerses.isEmpty)
+    }
+
     @Test func navigationAndPersistentFavorites() throws {
         let name = "ReflectionTests.\(UUID().uuidString)"
         let store = try #require(UserDefaults(suiteName: name))

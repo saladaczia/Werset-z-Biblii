@@ -20,12 +20,10 @@ struct WhatsNewView: View {
                         .foregroundStyle(.secondary)
                 }
                 VStack(alignment: .leading, spacing: 24) {
-                    feature("Sterowanie pod ręką", icon: "hand.tap", text: "Dotknij tła, aby pokazać lub ukryć panel na dole ekranu.")
-                    feature("Wracaj do wcześniejszych dni", icon: "calendar", text: "Użyj strzałek albo dotknij daty, aby otworzyć kalendarz. Przycisk „Wróć do dzisiaj” przeniesie Cię do bieżącej refleksji.")
-                    feature("Zachowuj ulubione", icon: "heart", text: "Dotknij „Zapisz” przy wybranej refleksji. Znajdziesz ją później w „Ulubionych”.")
-                    feature("Udostępniaj jako zdjęcie", icon: "square.and.arrow.up", text: "Wybierz „Udostępnij”, a potem cały ekran lub TikTok 9:16. Zdjęcie zawiera tylko tekst i tło. Opcja „Zachowaj obraz” zapisze je w Zdjęciach.")
-                    feature("Nowe tła i codzienna zmiana", icon: "photo.on.rectangle.angled", text: "W Ustawieniach → Wybór motywu znajdziesz galerie Jezus i Natura. Włącz „Codziennie inne tło” i wybierz wszystkie motywy albo jedną kategorię.")
-                    feature("Przypomnienie o Twojej porze", icon: "bell", text: "W Ustawieniach → Codzienne powiadomienie wybierz godzinę i włącz przypomnienie. Status pokaże, czy zostało zaplanowane.")
+                    feature("Werset na ekranie głównym", icon: "square.grid.2x2", text: "Dodaj mały lub średni widżet, aby mieć dzisiejszy werset pod ręką. Dotknij go, aby otworzyć refleksję. Instrukcję znajdziesz w Ustawieniach → Werset na ekranie głównym.")
+                    feature("Wygodniejsze ulubione", icon: "heart", text: "Lista zapisanych refleksji jest czytelniejsza. Przesuń wybraną pozycję w lewo, aby usunąć ją bez otwierania danego dnia.")
+                    feature("Lepsze zdjęcia refleksji", icon: "square.and.arrow.up", text: "W formacie TikTok 9:16 rozmiar tekstu dopasowuje się do wolnego miejsca nad ilustracją. Odnośnik do fragmentu Biblii jest teraz wyśrodkowany.")
+                    feature("Codziennie inne tło", icon: "photo.on.rectangle.angled", text: "Poprawiliśmy zmianę motywu po ponownym uruchomieniu aplikacji. Widżety również korzystają z wybranych teł i ustawionej kategorii.")
                 }
                 Text("Wersja \(updates.version)")
                     .font(.caption)

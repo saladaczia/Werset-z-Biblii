@@ -29,6 +29,14 @@ struct SettingView: View {
                                 .contentShape(Rectangle())
                             }
                             
+                            Section(header: Text("WIDGETY")) {
+                                NavigationLink {
+                                    WidgetGuideView()
+                                } label: {
+                                    Label("Werset na ekranie głównym", systemImage: "square.grid.2x2")
+                                }
+                            }
+
                             Section(header: Text("POWIADOMIENIA")) {
                                 NavigationLink {
                                     RemindersView()

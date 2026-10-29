@@ -1,0 +1,6 @@
+W wersji 1.3.1:
+• Nowe widżety: dzisiejszy werset na ekranie głównym w małym lub średnim rozmiarze, z motywem wybranym w aplikacji.
+• Czytelniejsza lista ulubionych i usuwanie zapisanych refleksji przesunięciem w lewo.
+• Lepsze dopasowanie tekstu podczas udostępniania zdjęcia w formacie 9:16.
+• Wyśrodkowane odnośniki do fragmentów Biblii.
+• Poprawiona codzienna zmiana tła po ponownym uruchomieniu aplikacji.

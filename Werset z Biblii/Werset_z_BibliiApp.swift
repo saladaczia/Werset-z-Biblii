@@ -34,9 +34,21 @@ struct Werset_z_BibliiApp: App {
                 .environmentObject(reminders)
                 .environmentObject(updates)
                 .preferredColorScheme(.dark)
-                .task { await reminders.refresh() }
+                .task { vm.syncWidget(); await reminders.refresh() }
+                .onChange(of: vm.widgetPreferences) { _, _ in vm.syncWidget() }
+                .onOpenURL { url in
+                    guard url.scheme == "werset", url.host == "today" else { return }
+                    updates.isPresented = false
+                    vm.selectVerseForToday()
+                    vm.onClickedSettings = false
+                    ReminderNavigation.shared.openToday = true
+                }
                 .onChange(of: scenePhase) { _, phase in
-                    if phase == .active { Task { await reminders.refresh() } }
+                    if phase == .active {
+                        vm.refreshBackgroundForCurrentDay()
+                        vm.syncWidget()
+                        Task { await reminders.refresh() }
+                    }
                 }
                 .onAppear {
                     // Play music in background

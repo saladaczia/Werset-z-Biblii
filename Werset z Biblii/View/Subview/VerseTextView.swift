@@ -36,18 +36,15 @@ struct VerseTextView: View {
                     .padding(.bottom, 2)
                     .padding(.horizontal, 20)
             
-            HStack {
-                Spacer()
-                // Reference verse
-                Text(vm.currentVerse?.reference ?? "Błąd")
-                        .font(.custom("Times New Roman", size: 18))
-                        .bold()
-                        .foregroundStyle(vm.isDarkBackground ? .white : .black)
-                       // .shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
-                        .padding(.trailing, 60)
-                        .padding(.bottom, 20)
-                
-            }
+            Text(vm.currentVerse?.reference ?? "Błąd")
+                .font(.custom("Times New Roman", size: 16))
+                .bold()
+                .foregroundStyle(vm.isDarkBackground ? .white : .black)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+
             // Line
             Divider()
                 .frame(height: 1)

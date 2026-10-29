@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AB1300000000000000000006 /* WersetWidgets.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AB1300000000000000000001 /* WersetWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AB1300000000000000000007 /* Werset z Biblii/Assets/Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB1300000000000000000002 /* Werset z Biblii/Assets/Assets.xcassets */; };
+		AB1300000000000000000008 /* Werset z Biblii/Model/versesList.json in Resources */ = {isa = PBXBuildFile; fileRef = AB1300000000000000000003 /* Werset z Biblii/Model/versesList.json */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		4E390BC92E35617600785E3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -14,11 +20,35 @@
 			remoteGlobalIDString = 4E48E4D72E0975840054048C;
 			remoteInfo = "Werset z Biblii";
 		};
+		AB130000000000000000000D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4E48E4D02E0975840054048C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AB130000000000000000000F;
+			remoteInfo = WersetWidgets;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AB1300000000000000000009 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				AB1300000000000000000006 /* WersetWidgets.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4E390BC52E35617600785E3D /* WersetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WersetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E48E4D82E0975840054048C /* Werset z Biblii.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Werset z Biblii.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB1300000000000000000001 /* WersetWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; path = WersetWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB1300000000000000000002 /* Werset z Biblii/Assets/Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Werset z Biblii/Assets/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		AB1300000000000000000003 /* Werset z Biblii/Model/versesList.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "Werset z Biblii/Model/versesList.json"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -30,6 +60,16 @@
 		4E48E4DA2E0975840054048C /* Werset z Biblii */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Werset z Biblii";
+			sourceTree = "<group>";
+		};
+		AB1300000000000000000004 /* WersetWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WersetWidgets;
+			sourceTree = "<group>";
+		};
+		AB1300000000000000000005 /* WidgetShared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WidgetShared;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -49,12 +89,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AB130000000000000000000B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		4E48E4CF2E0975840054048C = {
 			isa = PBXGroup;
 			children = (
+				AB1300000000000000000004 /* WersetWidgets */,
+				AB1300000000000000000005 /* WidgetShared */,
+				AB1300000000000000000002 /* Werset z Biblii/Assets/Assets.xcassets */,
+				AB1300000000000000000003 /* Werset z Biblii/Model/versesList.json */,
 				4E48E4DA2E0975840054048C /* Werset z Biblii */,
 				4E390BC62E35617600785E3D /* WersetTests */,
 				4E48E4D92E0975840054048C /* Products */,
@@ -64,6 +115,7 @@
 		4E48E4D92E0975840054048C /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				AB1300000000000000000001 /* WersetWidgets.appex */,
 				4E48E4D82E0975840054048C /* Werset z Biblii.app */,
 				4E390BC52E35617600785E3D /* WersetTests.xctest */,
 			);
@@ -103,13 +155,16 @@
 				4E48E4D42E0975840054048C /* Sources */,
 				4E48E4D52E0975840054048C /* Frameworks */,
 				4E48E4D62E0975840054048C /* Resources */,
+				AB1300000000000000000009 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AB130000000000000000000E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				4E48E4DA2E0975840054048C /* Werset z Biblii */,
+				AB1300000000000000000005 /* WidgetShared */,
 			);
 			name = "Werset z Biblii";
 			packageProductDependencies = (
@@ -117,6 +172,27 @@
 			productName = "Werset z Biblii";
 			productReference = 4E48E4D82E0975840054048C /* Werset z Biblii.app */;
 			productType = "com.apple.product-type.application";
+		};
+		AB130000000000000000000F /* WersetWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB1300000000000000000012 /* Build configuration list for PBXNativeTarget "WersetWidgets" */;
+			buildPhases = (
+				AB130000000000000000000A /* Sources */,
+				AB130000000000000000000B /* Frameworks */,
+				AB130000000000000000000C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				AB1300000000000000000004 /* WersetWidgets */,
+				AB1300000000000000000005 /* WidgetShared */,
+			);
+			name = WersetWidgets;
+			productName = WersetWidgets;
+			productReference = AB1300000000000000000001 /* WersetWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -151,6 +227,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				AB130000000000000000000F /* WersetWidgets */,
 				4E48E4D72E0975840054048C /* Werset z Biblii */,
 				4E390BC42E35617600785E3D /* WersetTests */,
 			);
@@ -172,6 +249,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AB130000000000000000000C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB1300000000000000000007 /* Werset z Biblii/Assets/Assets.xcassets in Resources */,
+				AB1300000000000000000008 /* Werset z Biblii/Model/versesList.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -189,6 +275,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AB130000000000000000000A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -196,6 +289,11 @@
 			isa = PBXTargetDependency;
 			target = 4E48E4D72E0975840054048C /* Werset z Biblii */;
 			targetProxy = 4E390BC92E35617600785E3D /* PBXContainerItemProxy */;
+		};
+		AB130000000000000000000E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AB130000000000000000000F /* WersetWidgets */;
+			targetProxy = AB130000000000000000000D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -371,6 +469,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Werset.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6V4RR3FKW;
@@ -389,7 +488,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "pl.goldenapp.Werset-z-Biblii";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -411,6 +510,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Werset.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6V4RR3FKW;
@@ -429,7 +529,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "pl.goldenapp.Werset-z-Biblii";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -440,6 +540,60 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		AB1300000000000000000010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = WersetWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W6V4RR3FKW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "WersetWidgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Werset na dziś";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "pl.goldenapp.Werset-z-Biblii.WersetWidgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AB1300000000000000000011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = WersetWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = W6V4RR3FKW;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "WersetWidgets-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Werset na dziś";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.3.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "pl.goldenapp.Werset-z-Biblii.WersetWidgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -471,6 +625,15 @@
 			buildConfigurations = (
 				4E48E4E62E0975850054048C /* Debug */,
 				4E48E4E72E0975850054048C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB1300000000000000000012 /* Build configuration list for PBXNativeTarget "WersetWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB1300000000000000000010 /* Debug */,
+				AB1300000000000000000011 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -86,30 +86,12 @@ struct ButtonsView: View {
             .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showFavorites) {
-            NavigationStack {
-                Group {
-                    if vm.favoriteVerses.isEmpty {
-                        ContentUnavailableView("Twoje ulubione", systemImage: "heart", description: Text("Dotknij serca przy refleksji, do której chcesz wracać."))
-                    } else {
-                        List(vm.favoriteVerses) { verse in
-                            Button {
-                                if let index = vm.verses.firstIndex(where: { $0.favoriteKey == verse.favoriteKey }) {
-                                    vm.selectVerse(at: index)
-                                }
-                                showFavorites = false
-                            } label: {
-                                VStack(alignment: .leading, spacing: 6) {
-                                    Text(verse.date).font(.caption).foregroundStyle(.secondary)
-                                    Text(verse.verse).font(.body).foregroundStyle(.primary)
-                                    Text(verse.reference).font(.caption.weight(.semibold)).foregroundStyle(.secondary)
-                                }.padding(.vertical, 5)
-                            }
-                        }
-                    }
-                }
-                .navigationTitle("Ulubione")
-                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Gotowe") { showFavorites = false } } }
+            FavoritesView {
+                showFavorites = false
             }
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
+            .presentationBackground(Color(.systemGroupedBackground))
         }
         .sheet(isPresented: $showShare) { ShareReflectionView(size: screenSize) }
     }
