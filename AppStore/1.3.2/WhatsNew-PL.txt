@@ -1,0 +1,3 @@
+Poprawiliśmy zdjęcia refleksji w formacie TikTok 9:16. Rozmiar czcionki refleksji dopasowuje się teraz osobno do każdego tła, aby lepiej wykorzystać wolne miejsce i nie zasłaniać ilustracji. Marginesy, data, werset i podpis pozostają stałe.
+
+Ujednoliciliśmy również kolory ustawień i ekranu „Co nowego” z niebieskim kolorem ikony aplikacji.

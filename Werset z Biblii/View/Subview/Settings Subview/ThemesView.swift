@@ -46,7 +46,7 @@ struct ThemesView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 16))
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 16)
-                                        .stroke(vm.selectedBackground == theme.name ? Color.blue : Color.clear, lineWidth: 3)
+                                        .stroke(vm.selectedBackground == theme.name ? Color.accentColor : Color.clear, lineWidth: 3)
                                 }
                             Text(theme.title)
                                 .font(.caption)

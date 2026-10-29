@@ -5,6 +5,77 @@ import SwiftUI
 
 @MainActor
 struct PortraitLayoutTests {
+    @Test func exportKeepsTopMarginForShortAndLongReflections() throws {
+        let suite = "PortraitMarginTests.\(UUID().uuidString)"
+        let store = try #require(UserDefaults(suiteName: suite))
+        defer { store.removePersistentDomain(forName: suite) }
+        let vm = VersesViewModel(favoritesStore: store, backgroundStore: store)
+        let sorted = vm.verses.sorted { $0.message.count < $1.message.count }
+        for verse in [try #require(sorted.first), try #require(sorted.last)] {
+            vm.currentVerse = verse
+            let image = try #require(ReflectionExporter.portraitTextImage(vm: vm, width: 402, maxHeight: 350))
+            let cg = try #require(image.cgImage)
+            let width = cg.width, height = cg.height
+            var bytes = [UInt8](repeating: 0, count: width * height * 4)
+            let firstRow: Int? = bytes.withUnsafeMutableBytes { buffer in
+                guard let context = CGContext(data: buffer.baseAddress, width: width, height: height,
+                    bitsPerComponent: 8, bytesPerRow: width * 4, space: CGColorSpaceCreateDeviceRGB(),
+                    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+                context.draw(cg, in: CGRect(x: 0, y: 0, width: width, height: height))
+                let pixels = buffer.bindMemory(to: UInt8.self)
+                return (0..<height).first { row in
+                    (0..<width).contains { pixels[(row * width + $0) * 4 + 3] > 20 }
+                }
+            }
+            let top = CGFloat(try #require(firstRow)) / image.scale
+            #expect(top >= 70)
+            #expect(top < 90)
+        }
+    }
+
+    @Test func shrinkingReflectionPreservesReaderHeaderAndMargins() throws {
+        let suite = "PortraitHeaderTests.\(UUID().uuidString)"
+        let store = try #require(UserDefaults(suiteName: suite))
+        defer { store.removePersistentDomain(forName: suite) }
+        let vm = VersesViewModel(favoritesStore: store, backgroundStore: store)
+        vm.currentVerse = try #require(vm.verses.last { $0.date == "29 października" })
+        func render(_ fontSize: CGFloat) throws -> UIImage {
+            let renderer = ImageRenderer(content: VerseTextView(fillsHeight: false, reflectionFontSize: fontSize)
+                .environmentObject(vm).environment(\.dynamicTypeSize, .medium)
+                .frame(width: 402).fixedSize(horizontal: false, vertical: true))
+            renderer.scale = 3
+            return try #require(renderer.uiImage)
+        }
+        let normal = try render(20)
+        let smaller = try render(12)
+        #expect(smaller.size.height < normal.size.height)
+        // The date, quote and reference must keep exactly the same pixels and positions.
+        let header = CGRect(x: 0, y: 0, width: 402 * 3, height: 190 * 3)
+        let normalHeader = try #require(normal.cgImage?.cropping(to: header))
+        let smallerHeader = try #require(smaller.cgImage?.cropping(to: header))
+        #expect(UIImage(cgImage: normalHeader).pngData() == UIImage(cgImage: smallerHeader).pngData())
+        let unconstrained = try #require(ReflectionExporter.portraitTextImage(vm: vm, width: 402, maxHeight: 1000))
+        #expect(unconstrained.pngData() == normal.pngData())
+    }
+
+    @Test func mountainBackgroundDoesNotShrinkOctober29Unnecessarily() throws {
+        let suite = "PortraitMountainTests.\(UUID().uuidString)"
+        let store = try #require(UserDefaults(suiteName: suite))
+        defer { store.removePersistentDomain(forName: suite) }
+        let vm = VersesViewModel(favoritesStore: store, backgroundStore: store)
+        vm.currentVerse = try #require(vm.verses.last { $0.date == "29 października" })
+        vm.selectedBackground = "nature01"
+        let size = CGSize(width: 402, height: 874)
+        let asset = try #require(UIImage(named: vm.selectedBackground))
+        let limit = ReflectionExporter.portraitTextHeight(assetSize: asset.size, readerSize: size, background: vm.selectedBackground)
+        let fitted = try #require(ReflectionExporter.portraitTextImage(vm: vm, width: size.width, maxHeight: limit))
+        let normal = try #require(ReflectionExporter.portraitTextImage(vm: vm, width: size.width, maxHeight: 1000))
+        #expect(fitted.pngData() == normal.pngData())
+        let output = try #require(ReflectionExporter.portrait(vm: vm, size: size))
+        let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        try output.pngData()?.write(to: folder.appendingPathComponent("tiktok-mountain-boundary.png"))
+    }
+
     @Test func october29UsesAvailableSpaceAboveGethsemane() throws {
         let suite = "PortraitTests.\(UUID().uuidString)"
         let store = try #require(UserDefaults(suiteName: suite))
@@ -14,9 +85,8 @@ struct PortraitLayoutTests {
         vm.selectedBackground = "jesus04"
         let size = CGSize(width: 402, height: 874)
         let asset = try #require(UIImage(named: vm.selectedBackground))
-        let limit = ReflectionExporter.portraitTextHeight(assetSize: asset.size, readerSize: size)
+        let limit = ReflectionExporter.portraitTextHeight(assetSize: asset.size, readerSize: size, background: vm.selectedBackground)
         let text = try #require(ReflectionExporter.portraitTextImage(vm: vm, width: size.width, maxHeight: limit))
-        #expect(text.size.height > limit * 0.90)
         #expect(text.size.height <= limit)
         let output = try #require(ReflectionExporter.portrait(vm: vm, size: size))
         let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -32,8 +102,12 @@ struct PortraitLayoutTests {
         var longest: VersesModel?
         var greatestHeight: CGFloat = 0
         for size in sizes {
-            let asset = try #require(UIImage(named: "jesus01"))
-            let limit = ReflectionExporter.portraitTextHeight(assetSize: asset.size, readerSize: size)
+            #expect(Set(ReflectionExporter.artworkStartFractions.keys) == Set(vm.allThemeNames))
+            let limits = try vm.allThemeNames.map { theme in
+                let asset = try #require(UIImage(named: theme))
+                return ReflectionExporter.portraitTextHeight(assetSize: asset.size, readerSize: size, background: theme)
+            }
+            let limit = try #require(limits.min())
             for verse in vm.verses {
                 try autoreleasepool {
                 vm.currentVerse = verse
@@ -52,7 +126,7 @@ struct PortraitLayoutTests {
         for theme in vm.allThemeNames {
             vm.selectedBackground = theme
             let asset = try #require(UIImage(named: theme))
-            let limit = ReflectionExporter.portraitTextHeight(assetSize: asset.size, readerSize: size)
+            let limit = ReflectionExporter.portraitTextHeight(assetSize: asset.size, readerSize: size, background: vm.selectedBackground)
             let text = try #require(ReflectionExporter.portraitTextImage(vm: vm, width: size.width, maxHeight: limit))
             #expect(text.size.height <= limit)
             let output = try #require(ReflectionExporter.portrait(vm: vm, size: size))

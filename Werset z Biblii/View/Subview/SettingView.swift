@@ -62,6 +62,7 @@ struct SettingView: View {
                             }
                         }
                     }
+                    .tint(Color.accentColor)
     }
 }
 

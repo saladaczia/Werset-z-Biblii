@@ -10,6 +10,7 @@ import SwiftUI
 struct VerseTextView: View {
     
     var fillsHeight = true
+    var reflectionFontSize: CGFloat = 20
 
     // ViewModel
     @EnvironmentObject private var vm: VersesViewModel
@@ -53,7 +54,7 @@ struct VerseTextView: View {
             
             // Text message
             Text(vm.currentVerse?.message ?? "Błąd")
-                .font(.custom("Times New Roman", size: 20))
+                .font(.custom("Times New Roman", size: reflectionFontSize))
                 .foregroundStyle(vm.isDarkBackground ? .white : .black)
                 //.shadow(color: vm.isDarkBackground ? .black : .white, radius: 10)
                 .multilineTextAlignment(.center)

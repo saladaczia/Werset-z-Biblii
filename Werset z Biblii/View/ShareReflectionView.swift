@@ -43,23 +43,35 @@ enum ReflectionExporter {
         return renderer.uiImage
     }
 
-    /// The top 55% of gallery assets is reserved for text. Account for both
-    /// the reader's centered aspect-fill crop and the TikTok crop from the top.
-    static func portraitTextHeight(assetSize: CGSize, readerSize: CGSize) -> CGFloat {
+    /// First important artwork, measured from the top of each original asset.
+    /// Keep these values with the gallery: replacing an asset requires a visual review.
+    static let artworkStartFractions: [String: CGFloat] = [
+        "jesus01": 0.67, "jesus02": 0.65, "jesus03": 0.70,
+        "jesus04": 0.60, "jesus05": 0.66, "jesus06": 0.72,
+        "jesus07": 0.69, "jesus08": 0.65, "jesus09": 0.63,
+        "jesus10": 0.68, "jesus11": 0.63, "jesus12": 0.67,
+        "nature01": 0.73, "nature02": 0.71, "nature03": 0.74,
+        "nature04": 0.65, "nature05": 0.75, "nature06": 0.70,
+        "nature07": 0.75, "nature08": 0.61, "nature09": 0.70
+    ]
+
+    /// Transform the asset's boundary through both crops, retaining a 2% export-height gap.
+    static func portraitTextHeight(assetSize: CGSize, readerSize: CGSize, background: String) -> CGFloat {
         let scale = max(readerSize.width / assetSize.width, readerSize.height / assetSize.height)
         let scaledHeight = assetSize.height * scale
         let portraitHeight = readerSize.width * 16 / 9
-        return min(portraitHeight * 0.5,
-                   (readerSize.height - scaledHeight) / 2 + scaledHeight * 0.55
-                   - (readerSize.height - portraitHeight) - readerSize.width * 0.04)
+        let artworkStart = artworkStartFractions[background] ?? 0.55
+        let boundary = (readerSize.height - scaledHeight) / 2 + scaledHeight * artworkStart
+            - (readerSize.height - portraitHeight)
+        return max(0, min(portraitHeight, boundary) - portraitHeight * 0.02)
     }
 
     static func portraitTextImage(vm: VersesViewModel, width: CGFloat, maxHeight: CGFloat) -> UIImage? {
-        // Start large and use the largest complete layout that fits above the artwork.
-        for step in 0...42 {
-            let scale = (1.30 - CGFloat(step) * 0.025) * width / 402
+        // Keep the reader layout fixed; only shrink the reflection when it overlaps the artwork.
+        for step in 0...60 {
+            let reflectionFontSize = 20 - CGFloat(step) * 0.25
             let candidate: UIImage? = autoreleasepool {
-                let renderer = ImageRenderer(content: PortraitReflectionText(fontScale: scale)
+                let renderer = ImageRenderer(content: VerseTextView(fillsHeight: false, reflectionFontSize: reflectionFontSize)
                     .environmentObject(vm)
                     .environment(\.dynamicTypeSize, .medium)
                     .frame(width: width)
@@ -75,7 +87,7 @@ enum ReflectionExporter {
 
     static func portrait(vm: VersesViewModel, size: CGSize) -> UIImage? {
         guard let asset = UIImage(named: vm.selectedBackground) else { return nil }
-        let textHeight = portraitTextHeight(assetSize: asset.size, readerSize: size)
+        let textHeight = portraitTextHeight(assetSize: asset.size, readerSize: size, background: vm.selectedBackground)
         guard let text = portraitTextImage(vm: vm, width: size.width, maxHeight: textHeight) else { return nil }
         let backgroundRenderer = ImageRenderer(content: ReflectionCanvas(size: size, textOpacity: 0)
             .environmentObject(vm))
@@ -101,35 +113,6 @@ enum ReflectionExporter {
         guard let crop = source.cropping(to: CGRect(x: 0, y: source.height - pixelHeight,
                                                    width: source.width, height: pixelHeight)) else { return nil }
         return UIImage(cgImage: crop, scale: image.scale, orientation: .up)
-    }
-}
-
-/// Compact export typography; the on-screen reader keeps its existing font sizes.
-private struct PortraitReflectionText: View {
-    let fontScale: CGFloat
-    @EnvironmentObject private var vm: VersesViewModel
-
-    var body: some View {
-        VStack(spacing: 7 * fontScale) {
-            Text(vm.currentVerse?.date ?? "")
-                .font(.custom("Times New Roman", size: 25 * fontScale)).bold()
-            Text(vm.currentVerse?.verse ?? "")
-                .font(.custom("Times New Roman", size: 22 * fontScale)).italic()
-            Text(vm.currentVerse?.reference ?? "")
-                .font(.custom("Times New Roman", size: 16 * fontScale)).bold()
-                .frame(maxWidth: .infinity, alignment: .center)
-            Divider().overlay(Color.gray.opacity(0.3))
-                .padding(.horizontal, 40 * fontScale)
-                .padding(.vertical, 3 * fontScale)
-            Text(vm.currentVerse?.message ?? "")
-                .font(.custom("Times New Roman", size: 20 * fontScale))
-        }
-        .multilineTextAlignment(.center)
-        .foregroundStyle(Color.black)
-        .fixedSize(horizontal: false, vertical: true)
-        .padding(.horizontal, 26 * fontScale)
-        .padding(.top, 30 * fontScale)
-        .padding(.bottom, 8 * fontScale)
     }
 }
 
@@ -160,7 +143,7 @@ struct ShareReflectionView: View {
                     .disabled(portrait == nil)
                     Text(portrait == nil
                          ? "Cały ekran zachowuje pełny tekst refleksji."
-                         : "Format 9:16 zachowuje dół tła. Rozmiar tekstu dopasowuje się do wolnej przestrzeni u góry.")
+                         : "Format 9:16 zachowuje dół tła. Tylko czcionka refleksji zmniejsza się, jeśli wymaga tego tło.")
                         .font(.footnote).foregroundStyle(.secondary)
                     Button { showActivity = true } label: {
                         Label("Udostępnij zdjęcie", systemImage: "square.and.arrow.up")
